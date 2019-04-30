@@ -35,9 +35,9 @@ public interface ContactMapper {
             "AND tag = #{tag}",
             "</when>",
             "</script>"})
-    Long getCount(@Param("userId")Long userId,
-                  @Param("name")String name,
-                  @Param("tag")String tag);
+    Long getCount(@Param("userId") Long userId,
+                  @Param("name") String name,
+                  @Param("tag") String tag);
 
 
     @Delete({"<script>",
@@ -47,7 +47,7 @@ public interface ContactMapper {
             "#{id}",
             "</foreach>",
             "</script>"})
-    int deleteByIds(@Param("ids")String[] ids);
+    int deleteByIds(@Param("ids") String[] ids);
 
     @Update({"<script>",
             "update Contact",
@@ -58,7 +58,7 @@ public interface ContactMapper {
             "</when>",
 
             "<when test='contact.birthday!=null'>",
-            "name = #{contact.birthday},",
+            "birthday = #{contact.birthday},",
             "</when>",
 
             "<when test='contact.phone!=null'>",
@@ -87,7 +87,7 @@ public interface ContactMapper {
     int update(@Param("contact") Contact contact);
 
     @Insert({"<script>",
-            "insert into Contact (userId,name,birthday,phone,email,tag,remark,updateTime)",
+            "insert into `Contact` (userId,name,birthday,phone,email,tag,remark,updateTime)",
             "values (#{userId},#{name},#{birthday},#{phone},#{email},#{tag},#{remark},#{updateTime})",
             "</script>"})
     int add(Contact contact);

@@ -28,13 +28,11 @@ public class ContactController {
         Map<String, Object> map = new HashMap<>();
         map.put("contacts", contactVoList);
         map.put("count", count);
-        System.out.println(map);
         return map;
     }
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     public Result add(Contact contact) {
-        System.out.println(contact);
         if (contactService.add(contact) == 1) {
             return Result.ok("添加成功!");
         }
