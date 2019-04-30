@@ -1,4 +1,4 @@
-# memofro-frontend
+# memopro-frontend
 
 > A memo friend by your side on the web!
 
