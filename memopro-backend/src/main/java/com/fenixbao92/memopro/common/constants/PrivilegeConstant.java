@@ -19,17 +19,17 @@ public class PrivilegeConstant {
         ROOT(0, "/", null, null, "所有", null, null),
 
         //level 1
-        BASIC(1, "/", "/home", "HOME", "基本资料", "fa fa-user-circle-o", ROOT),
-        BIRTHDAY(2, "/", "/home", "HOME", "生日管理", "fa fa-address-card-o", ROOT),
-        READING(3, "/", "/home", "HOME", "阅读管理", "fa fa-money", ROOT),
-        TODO(4, "/", "/home", "HOME", "待办管理", "fa fa-bar-chart", ROOT),
-        SYSTEM(5, "/", "/home", "HOME", "系统管理", "fa fa-bar-chart", ROOT),
+        BASIC(1, "/", "/home", "Home", "基本资料", "fa fa-user-circle-o", ROOT),
+        SOCIAL(2, "/", "/home", "Home", "社交管理", "fa fa-address-card-o", ROOT),
+        READING(3, "/", "/home", "Home", "阅读管理", "fa fa-money", ROOT),
+        TODO(4, "/", "/home", "Home", "待办管理", "fa fa-bar-chart", ROOT),
+        SYSTEM(5, "/", "/home", "Home", "系统管理", "fa fa-bar-chart", ROOT),
 
         //level 2
         BASIC_INFO(6, "/basic/info/**", "/basic/info", "BasicInfo", "个人信息", null, BASIC),
         BASIC_PASSWORD(7, "/basic/password/**", "/basic/password", "BasicPassword", "账号密码", null, BASIC),
 
-        BIRTHDAY_FRIEND(8, "/birthday/friend/**", "/birthday/friend", "BirthdayFriend", "朋友生日", null, BIRTHDAY),
+        SOCIAL_CONTACT(8, "/social/contact/**", "/social/contact", "SocialContact", "通讯录", null, SOCIAL),
 
         READING_LIST(9, "/reading/list/**", "/reading/list", "ReadingList", "阅读书目", null, READING),
 
@@ -78,9 +78,9 @@ public class PrivilegeConstant {
     public enum RoleMeta {
 
         //only level 3 need control
-        ADMIN("ROLE_ADMIN", "管理员", new MenuMeta[]{ROOT, BASIC, BIRTHDAY, READING, TODO, SYSTEM, BASIC_INFO, BASIC_PASSWORD, BIRTHDAY_FRIEND, READING_LIST, TODO_NOTE, TODO_DAY, TODO_WEEK, SYSTEM_PRIVILEGE}),
-        VIP("ROLE_VIP", "VIP用户", new MenuMeta[]{ROOT, BASIC, BIRTHDAY, READING, TODO, BASIC_INFO, BASIC_PASSWORD, BIRTHDAY_FRIEND, READING_LIST, TODO_NOTE, TODO_DAY, TODO_WEEK}),
-        USER("ROLE_USER", "普通用户", new MenuMeta[]{ROOT, BASIC, BIRTHDAY, TODO, BASIC_INFO, BASIC_PASSWORD, BIRTHDAY_FRIEND, TODO_NOTE, TODO_DAY});
+        ADMIN("ROLE_ADMIN", "管理员", new MenuMeta[]{ROOT, BASIC, SOCIAL, READING, TODO, SYSTEM, BASIC_INFO, BASIC_PASSWORD, SOCIAL_CONTACT, READING_LIST, TODO_NOTE, TODO_DAY, TODO_WEEK, SYSTEM_PRIVILEGE}),
+        VIP("ROLE_VIP", "VIP用户", new MenuMeta[]{ROOT, BASIC, SOCIAL, READING, TODO, BASIC_INFO, BASIC_PASSWORD, SOCIAL_CONTACT, READING_LIST, TODO_NOTE, TODO_DAY, TODO_WEEK}),
+        USER("ROLE_USER", "普通用户", new MenuMeta[]{ROOT, BASIC, SOCIAL, TODO, BASIC_INFO, BASIC_PASSWORD, SOCIAL_CONTACT, TODO_NOTE, TODO_DAY});
 
         RoleMeta(String name, String nameZh, MenuMeta[] menuMetas) {
             this.name = name;

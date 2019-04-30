@@ -24,24 +24,26 @@ Vue.prototype.deleteRequest = deleteRequest;
 Vue.prototype.putRequest = putRequest;
 Vue.prototype.isNotNullORBlank = isNotNullORBlank;
 
-router.beforeEach((to, from, next)=> {
+router.beforeEach((to, from, next) => {
     if (to.name == 'Login') {
       next();
       return;
     }
-    var name = store.state.user.name;
-    if (name == '未登录') {
-      if (to.meta.requireAuth || to.name == null) {
-        next({path: '/', query: {redirect: to.path}})
-      } else {
-        next();
-      }
-    } else {
-      initMenu(router, store);
-      if(to.path=='/chat')
-        store.commit("updateMsgList", []);
-      next();
-    }
+    // var name = store.state.user.account;
+    // if (name == '未登录') {
+    //   if (to.meta.requireAuth || to.name == null) {
+    //     next({path: '/', query: {redirect: to.path}})
+    //   } else {
+    //     next();
+    //   }
+    // } else {
+    //   initMenu(router, store);
+    //   if(to.path=='/chat')
+    //     store.commit("updateMsgList", []);
+    //   next();
+    // }
+    initMenu(router, store);
+    next();
   }
 )
 

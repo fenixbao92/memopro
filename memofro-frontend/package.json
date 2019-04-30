@@ -1,5 +1,5 @@
 {
-  "name": "memopro-frontend",
+  "name": "memofro-frontend",
   "version": "1.0.0",
   "description": "A memo friend by your side on the web!",
   "author": "fenixbao92 <fenixbao92@gmail.com>",
@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "element-ui": "^2.7.2",
+    "element-ui": "^2.8.2",
     "font-awesome": "^4.7.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.6",
