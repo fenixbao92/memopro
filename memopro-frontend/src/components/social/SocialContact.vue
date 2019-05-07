@@ -70,13 +70,12 @@
                         <el-table-column
                                 prop="name"
                                 align="left"
-                                fixed
                                 label="姓名"
-                                width="90">
+                                >
                         </el-table-column>
                         <el-table-column
                                 prop="birthday"
-                                width="120"
+
                                 align="left"
                                 label="生日">
                         </el-table-column>
@@ -84,22 +83,21 @@
                                 align="left"
                                 prop="phone"
                                 label="手机"
-                                width="100">
+                                >
                         </el-table-column>
                         <el-table-column
                                 align="left"
                                 prop="tag"
                                 label="标签"
-                                width="100">
+                                >
                         </el-table-column>
                         <el-table-column
                                 prop="remark"
-                                width="80"
                                 align="left"
-                                label="备注">
+                                label="备注"
+                                width="50%">
                         </el-table-column>
                         <el-table-column
-                                width="120"
                                 align="left"
                                 label="修改时间">
                             <template slot-scope="scope">{{ scope.row.updateTime | formatDate}}</template>
@@ -107,7 +105,7 @@
                         <el-table-column
                                 align="left"
                                 label="操作"
-                                width="120">
+                                width="120%">
                             <template slot-scope="scope">
                                 <el-button @click="showEditContactView(scope.row)"
                                            style="padding: 3px 4px 3px 4px;margin: 2px"

@@ -34,8 +34,8 @@ public class PrivilegeConstant {
         READING_LIST(9, "/reading/list/**", "/reading/list", "ReadingList", "阅读书目", null, READING),
 
         TODO_NOTE(10, "/todo/note/**", "/todo/note", "TodoNote", "小便条", null, TODO),
-        TODO_DAY(11, "/todo/day/**", "/todo/day", "TodoDay", "今日待办", null, TODO),
-        TODO_WEEK(12, "/todo/week/**", "/todo/week", "TodoWeek", "本周计划", null, TODO),
+        TODO_DAY(11, "/todo/day/**", "/todo/day", "TodoDay", "每日待办", null, TODO),
+        TODO_WEEK(12, "/todo/week/**", "/todo/week", "TodoWeek", "每周计划", null, TODO),
 
         SYSTEM_PRIVILEGE(13, "/system/privilege/**", "/system/privilege", "SystemPrivilege", "系统权限", null, SYSTEM),;
 
