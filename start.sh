@@ -1,6 +1,7 @@
 cd memopro-frontend
 npm install
 npm run build
+rm -rf ../memopro-backend/src/main/resources/static
 mkdir ../memopro-backend/src/main/resources/static
 cp -r ./dist/* ../memopro-backend/src/main/resources/static
 cd ../memopro-backend
