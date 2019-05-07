@@ -85,10 +85,19 @@
               </template>
             </el-table-column>
             <el-table-column
-              prop="remark"
               align="left"
-              label="备注"
-              width="50%">
+              label="开始时间">
+              <template slot-scope="scope">{{startTime(scope.row.startTime)}}</template>
+            </el-table-column>
+            <el-table-column
+              align="left"
+              label="结束时间">
+              <template slot-scope="scope">{{endTime(scope.row.endTime)}}</template>
+            </el-table-column>
+            <el-table-column
+              align="left"
+              label="持续时间">
+              <template slot-scope="scope">{{useTime(scope.row.startTime,scope.row.endTime)}}</template>
             </el-table-column>
             <el-table-column
               align="left"
@@ -185,13 +194,14 @@
 </template>
 <script>
   import {nextDate} from "element-ui/lib/utils/date-util";
+
   export default {
     data() {
       return {
         models: [],
         status: ["未开始", "进行中", "已完成"],
         tags: ["工作", "学习", "实践", "阅读", "其它"],
-        times: ["今天","明天","后天"],
+        times: ["今天", "明天", "后天"],
         totalCount: -1,
         currentPage: 1,
         searchTime: this.formatDayTime(new Date()),
@@ -215,12 +225,12 @@
       this.loadModels();
     },
     methods: {
-      getTimeStr(str){
+      getTimeStr(str) {
         let date = new Date();
-        if(str==='明天'){
-          date = nextDate(date,1);
-        }else if(str==='后天'){
-          date = nextDate(date,2);
+        if (str === '明天') {
+          date = nextDate(date, 1);
+        } else if (str === '后天') {
+          date = nextDate(date, 2);
         }
         return this.formatDayTime(date);
       },
@@ -230,12 +240,14 @@
       getEmptyModel() {
         return {
           name: '',
-          index : '',
+          index: '',
           category: '',
           time: '今天',
           status: '',
           tag: '',
           parentId: '',
+          startTime: '',
+          endTime: '',
           updateTime: '',
         }
       },
@@ -305,9 +317,9 @@
           }
         });
       },
-      startDo(row){
+      startDo(row) {
         var _this = this;
-        var val = {"todoId":row.todoId,status:"进行中"};
+        var val = {"todoId": row.todoId, status: "进行中"};
         this.postRequest("/todo/update", val).then(resp => {
           _this.tableLoading = false;
           if (resp && resp.status == 200) {
@@ -316,9 +328,9 @@
           }
         })
       },
-      finishDo(row){
+      finishDo(row) {
         var _this = this;
-        var val = {"todoId":row.todoId,status:"已完成"};
+        var val = {"todoId": row.todoId, status: "已完成"};
         this.postRequest("/todo/update", val).then(resp => {
           _this.tableLoading = false;
           if (resp && resp.status == 200) {
@@ -374,6 +386,35 @@
         this.currentPage = currentChange;
         this.loadModels();
       },
+      startTime(d) {
+        if (d !== null) {
+          return this.formatDate(d);
+        }
+        return '-';
+      },
+      endTime(d) {
+        if (d !== null) {
+          return this.formatDate(d);
+        }
+        return '-';
+      },
+
+      useTime(d1,d2) {
+        if (d1 !== null) {
+          d1 = new Date(d1);
+          if (d2 === null) {
+            d2 = new Date();
+          }
+          d2 = new Date(d2);
+          var seconds = parseInt((d2 - d1)/1000);
+          var hour = parseInt(seconds/3600);
+          seconds = seconds%3600;
+          var minutes = parseInt(seconds/60);
+          seconds = seconds%60;
+          return hour+"h"+minutes+"m"+seconds+"s";
+        }
+        return '-';
+      }
     }
   };
 </script>

@@ -37,6 +37,15 @@ public class TodoService {
     }
 
     public int updateTodo(Todo todo) {
+        if(todo.getStatus().equals("未开始")){
+            todo.setStartTime(null);
+            todo.setEndTime(null);
+        }else if(todo.getStatus().equals("进行中")){
+            todo.setStartTime(new Date());
+            todo.setEndTime(null);
+        }else if(todo.getStatus().equals("已完成")){
+            todo.setEndTime(new Date());
+        }
         todo.setUpdateTime(new Date());
         return todoMapper.update(todo);
     }

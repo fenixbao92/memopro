@@ -52,7 +52,6 @@ public class TodoController {
 
     @RequestMapping("/update")
     public Result update(Todo todo) {
-        System.out.println(1111);
         if (todoService.updateTodo(todo) == 1) {
             return Result.ok("更新成功!");
         }
