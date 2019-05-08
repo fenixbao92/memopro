@@ -55,7 +55,7 @@ public class TodoService {
         Long userId = userService.getCurrentUserIdByAccount();
         todo.setUserId(userId);
         todo.setUpdateTime(new Date());
-        Long count = getCount(todo.getTime(),todo.getCategory(),todo.getStatus(),todo.getTag());
+        Long count = getCount(todo.getTime(),null,null,null);
         todo.setIndex(todo.getTime()+"#"+(count+1));
         System.out.println(todo);
         return todoMapper.add(todo);
