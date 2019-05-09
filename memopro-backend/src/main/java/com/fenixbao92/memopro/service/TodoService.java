@@ -60,4 +60,15 @@ public class TodoService {
         System.out.println(todo);
         return todoMapper.add(todo);
     }
+
+    public int changeStatus(Long todoId, String status, String action) {
+        if(status.equals("未开始")){
+
+        }
+
+        System.out.println(todoId);
+        System.out.println(status);
+        System.out.println(action);
+        return 1;
+    }
 }

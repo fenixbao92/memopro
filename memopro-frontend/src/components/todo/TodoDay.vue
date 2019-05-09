@@ -53,61 +53,80 @@
             <el-table-column
               prop="index"
               align="left"
-              label="序号"
+              label="序号1"
+              min-width=35
             >
             </el-table-column>
             <el-table-column
               prop="name"
               align="left"
-              label="内容">
+              label="内容"
+              min-width=100>
             </el-table-column>
             <el-table-column
               align="left"
               prop="tag"
               label="标签"
+              min-width=25
             >
             </el-table-column>
             <el-table-column
               align="left"
               label="状态"
+              min-width=98
             >
               <template slot-scope="scope">
                 {{ scope.row.status }}
-                <el-button type="primary" icon="el-icon-edit" circle
-                           @click="startDo(scope.row)"
+                <el-button type="primary" icon="el-icon-edit" :disabled="showBystatus(scope.row.status)[0]"
+                           @click="doit(scope.row,'start')"
                            style="padding: 3px 4px 3px 4px;margin: 2px"
-                           size="mini">
+                           size="mini">开始
                 </el-button>
-                <el-button type="success" icon="el-icon-check" circle
+                <el-button type="primary" icon="el-icon-edit" :disabled="showBystatus(scope.row.status)[1]"
+                           @click="doit(scope.row,'pause')"
+                           style="padding: 3px 4px 3px 4px;margin: 2px"
+                           size="mini">暂停
+                </el-button>
+                <el-button type="primary" icon="el-icon-edit" :disabled="showBystatus(scope.row.status)[2]"
+                           @click="doit(scope.row,'resume')"
+                           style="padding: 3px 4px 3px 4px;margin: 2px"
+                           size="mini">继续
+                </el-button>
+                <el-button type="success" icon="el-icon-check" :disabled="showBystatus(scope.row.status)[3]"
                            style="padding: 3px 4px 3px 4px;margin: 2px" size="mini"
-                           @click="finishDo(scope.row)">
+                           @click="doit(scope.row,'finish')">完成
                 </el-button>
               </template>
             </el-table-column>
             <el-table-column
               align="left"
-              label="开始时间">
+              label="开始时间"
+              min-width=50>
               <template slot-scope="scope">{{startTime(scope.row.startTime)}}</template>
             </el-table-column>
             <el-table-column
               align="left"
-              label="结束时间">
+              label="结束时间"
+              min-width=50>
               <template slot-scope="scope">{{endTime(scope.row.endTime)}}</template>
             </el-table-column>
             <el-table-column
               align="left"
-              label="持续时间">
+              label="持续时间"
+              min-width=35>
               <template slot-scope="scope">{{useTime(scope.row.startTime,scope.row.endTime)}}</template>
             </el-table-column>
             <el-table-column
               align="left"
-              label="修改时间">
+              label="修改时间"
+              min-width=50>
               <template slot-scope="scope">{{ scope.row.updateTime | formatDate}}</template>
             </el-table-column>
             <el-table-column
               align="left"
               label="操作"
-              width="120%">
+              min-width=35
+            >
               <template slot-scope="scope">
                 <el-button @click="showEditModelView(scope.row)"
                            style="padding: 3px 4px 3px 4px;margin: 2px"
@@ -199,7 +218,7 @@
     data() {
       return {
         models: [],
-        status: ["未开始", "进行中", "已完成"],
+        status: ["未开始", "进行中", "暂停中", "已完成"],
         tags: ["工作", "学习", "实践", "阅读", "其它"],
         times: ["今天", "明天", "后天"],
         totalCount: -1,
@@ -220,6 +239,18 @@
 
       };
     },
+    computed: {
+      a: function () {
+        var x = new Date().getSeconds();
+        console.log(x);
+        if (x % 2 == 0) {
+          return true;
+        } else {
+          return false;
+        }
+
+      }
+    },
     mounted: function () {
       this.initModelData();
       this.loadModels();
@@ -234,7 +265,19 @@
         }
         return this.formatDayTime(date);
       },
-
+      showBystatus(currentStatus) {
+        var result = [false,false,false,false];
+        if (currentStatus === '未开始') {
+          result = [false,true,true,true];
+        } else if (currentStatus === '进行中') {
+          result = [true,false,true,false];
+        } else if (currentStatus === '暂停中') {
+          result = [true,true,false,true];
+        } else if (currentStatus === '已完成'){
+          result = [true,true,true,true];
+        }
+        return [false,false,false,false];
+      },
       initModelData() {
       },
       getEmptyModel() {
@@ -317,10 +360,10 @@
           }
         });
       },
-      startDo(row) {
+      doit(row,action) {
         var _this = this;
-        var val = {"todoId": row.todoId, status: "进行中"};
-        this.postRequest("/todo/update", val).then(resp => {
+        var val = {"todoId": row.todoId, "status":row.status,"action": action};
+        this.postRequest("/todo/changeStatus", val).then(resp => {
           _this.tableLoading = false;
           if (resp && resp.status == 200) {
             var data = resp.data;
@@ -399,19 +442,19 @@
         return '-';
       },
 
-      useTime(d1,d2) {
+      useTime(d1, d2) {
         if (d1 !== null) {
           d1 = new Date(d1);
           if (d2 === null) {
             d2 = new Date();
           }
           d2 = new Date(d2);
-          var seconds = parseInt((d2 - d1)/1000);
-          var hour = parseInt(seconds/3600);
-          seconds = seconds%3600;
-          var minutes = parseInt(seconds/60);
-          seconds = seconds%60;
-          return hour+"h"+minutes+"m"+seconds+"s";
+          var seconds = parseInt((d2 - d1) / 1000);
+          var hour = parseInt(seconds / 3600);
+          seconds = seconds % 3600;
+          var minutes = parseInt(seconds / 60);
+          seconds = seconds % 60;
+          return hour + "h" + minutes + "m" + seconds + "s";
         }
         return '-';
       }
