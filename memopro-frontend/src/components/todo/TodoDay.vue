@@ -75,28 +75,28 @@
               label="状态"
               min-width=98
             >
-              <template slot-scope="scope">
-                {{ scope.row.status }}
-                <el-button type="primary" icon="el-icon-edit" :disabled="showBystatus(scope.row.status)[0]"
-                           @click="doit(scope.row,'start')"
-                           style="padding: 3px 4px 3px 4px;margin: 2px"
-                           size="mini">开始
-                </el-button>
-                <el-button type="primary" icon="el-icon-edit" :disabled="showBystatus(scope.row.status)[1]"
-                           @click="doit(scope.row,'pause')"
-                           style="padding: 3px 4px 3px 4px;margin: 2px"
-                           size="mini">暂停
-                </el-button>
-                <el-button type="primary" icon="el-icon-edit" :disabled="showBystatus(scope.row.status)[2]"
-                           @click="doit(scope.row,'resume')"
-                           style="padding: 3px 4px 3px 4px;margin: 2px"
-                           size="mini">继续
-                </el-button>
-                <el-button type="success" icon="el-icon-check" :disabled="showBystatus(scope.row.status)[3]"
-                           style="padding: 3px 4px 3px 4px;margin: 2px" size="mini"
-                           @click="doit(scope.row,'finish')">完成
-                </el-button>
-              </template>
+            <template slot-scope="scope">
+              {{ scope.row.status }}
+              <el-button type="primary" icon="el-icon-edit" :disabled="showBystatus(scope.row.status)[0]"
+                         @click="doit(scope.row,'start')"
+                         style="padding: 3px 4px 3px 4px;margin: 2px"
+                         size="mini">开始
+              </el-button>
+              <el-button type="primary" icon="el-icon-edit" :disabled="showBystatus(scope.row.status)[1]"
+                         @click="doit(scope.row,'pause')"
+                         style="padding: 3px 4px 3px 4px;margin: 2px"
+                         size="mini">暂停
+              </el-button>
+              <el-button type="primary" icon="el-icon-edit" :disabled="showBystatus(scope.row.status)[2]"
+                         @click="doit(scope.row,'resume')"
+                         style="padding: 3px 4px 3px 4px;margin: 2px"
+                         size="mini">继续
+              </el-button>
+              <el-button type="success" icon="el-icon-check" :disabled="showBystatus(scope.row.status)[3]"
+                         style="padding: 3px 4px 3px 4px;margin: 2px" size="mini"
+                         @click="doit(scope.row,'finish')">完成
+              </el-button>
+            </template>
             </el-table-column>
             <el-table-column
               align="left"
@@ -127,15 +127,15 @@
               label="操作"
               min-width=35
             >
-              <template slot-scope="scope">
-                <el-button @click="showEditModelView(scope.row)"
-                           style="padding: 3px 4px 3px 4px;margin: 2px"
-                           size="mini">编辑
-                </el-button>
-                <el-button type="danger" style="padding: 3px 4px 3px 4px;margin: 2px" size="mini"
-                           @click="deleteModel(scope.row)">删除
-                </el-button>
-              </template>
+            <template slot-scope="scope">
+              <el-button @click="showEditModelView(scope.row)"
+                         style="padding: 3px 4px 3px 4px;margin: 2px"
+                         size="mini">编辑
+              </el-button>
+              <el-button type="danger" style="padding: 3px 4px 3px 4px;margin: 2px" size="mini"
+                         @click="deleteModel(scope.row)">删除
+              </el-button>
+            </template>
             </el-table-column>
           </el-table>
           <div style="display: flex;justify-content: space-between;margin: 2px">
@@ -219,7 +219,7 @@
       return {
         models: [],
         status: ["未开始", "进行中", "暂停中", "已完成"],
-        tags: ["工作", "学习", "实践", "阅读", "学习","其它"],
+        tags: ["工作", "学习", "实践", "阅读", "生活", "其它"],
         times: ["今天", "明天", "后天"],
         totalCount: -1,
         currentPage: 1,
@@ -266,15 +266,15 @@
         return this.formatDayTime(date);
       },
       showBystatus(currentStatus) {
-        var result = [false,false,false,false];
+        var result = [false, false, false, false];
         if (currentStatus === '未开始') {
-          result = [false,true,true,true];
+          result = [false, true, true, true];
         } else if (currentStatus === '进行中') {
-          result = [true,false,true,false];
+          result = [true, false, true, false];
         } else if (currentStatus === '暂停中') {
-          result = [true,true,false,true];
-        } else if (currentStatus === '已完成'){
-          result = [true,true,true,true];
+          result = [true, true, false, true];
+        } else if (currentStatus === '已完成') {
+          result = [true, true, true, true];
         }
         return result;
       },
@@ -361,7 +361,7 @@
           }
         });
       },
-      doit(row,action) {
+      doit(row, action) {
         var _this = this;
         var val = {"todoId": row.todoId, "action": action};
         this.postRequest("/todo/changeStatus", val).then(resp => {
