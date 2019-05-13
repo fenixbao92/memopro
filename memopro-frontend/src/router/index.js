@@ -33,28 +33,28 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Login',
-      component: Login,
+      name: '登录界面',
+      component: resolve => require(['@/components/Login'], resolve),
       // hidden: true
     },
     {
       path: '/home',
       name: '主页',
-      component: Home,
+      component: resolve => require(['@/components/Home'], resolve),
       // hidden: true,
       // meta: {
       //   requireAuth: true
       // }
     },
-    {
-      path: '/xxx',
-      name: '主页',
-      component: SocialContact,
-      // hidden: true,
-      // meta: {
-      //   requireAuth: true
-      // }
-    }
+    // {
+    //   path: '/xxx',
+    //   name: '主页',
+    //   component: SocialContact,
+    //   // hidden: true,
+    //   // meta: {
+    //   //   requireAuth: true
+    //   // }
+    // }
       // children: [
       //   {
       //     path: '/chat',

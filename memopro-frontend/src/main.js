@@ -26,7 +26,7 @@ Vue.prototype.isNotNullORBlank = isNotNullORBlank;
 
 router.beforeEach((to, from, next) => {
 
-    if (to.name == 'Login') {
+    if (to.name == '登录界面') {
       next();
       return;
     }
