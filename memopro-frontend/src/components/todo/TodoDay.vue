@@ -53,7 +53,7 @@
             <el-table-column
               prop="index"
               align="left"
-              label="序号1"
+              label="序号"
               min-width=35
             >
             </el-table-column>
