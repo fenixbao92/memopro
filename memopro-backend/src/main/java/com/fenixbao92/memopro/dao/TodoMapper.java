@@ -10,7 +10,13 @@ public interface TodoMapper {
 
     @Select({"<script>",
             "SELECT * FROM Todo",
-            "WHERE userId = #{userId} ",
+            "WHERE 1=1",
+            "<when test='todoId!=null'>",
+            "AND todoId = #{todoId}",
+            "</when>",
+            "<when test='userId!=null'>",
+            "AND userId = #{userId}",
+            "</when>",
             "<when test='time!=null and time!=\"\"'>",
             "AND time = #{time}",
             "</when>",
@@ -25,7 +31,8 @@ public interface TodoMapper {
             "</when>",
             "limit #{offset},#{size}",
             "</script>"})
-    List<Todo> getList(@Param("userId") Long userId,
+    List<Todo> getList(@Param("todoId") Long todoId,
+                       @Param("userId") Long userId,
                        @Param("time") String time,
                        @Param("category") String category,
                        @Param("status") String status,
@@ -35,7 +42,13 @@ public interface TodoMapper {
 
     @Select({"<script>",
             "SELECT count(1)FROM Todo",
-            "WHERE userId = #{userId} ",
+            "WHERE 1=1",
+            "<when test='todoId!=null'>",
+            "AND todoId = #{todoId}",
+            "</when>",
+            "<when test='userId!=null'>",
+            "AND userId = #{userId}",
+            "</when>",
             "<when test='time!=null and time!=\"\"'>",
             "AND time = #{time}",
             "</when>",
@@ -49,7 +62,8 @@ public interface TodoMapper {
             "AND tag = #{tag}",
             "</when>",
             "</script>"})
-    Long getCount(@Param("userId") Long userId,
+    Long getCount(@Param("todoId") Long todoId,
+                  @Param("userId") Long userId,
                   @Param("time") String time,
                   @Param("category") String category,
                   @Param("status") String status,
@@ -93,8 +107,16 @@ public interface TodoMapper {
             "parentId = #{todo.parentId},",
             "</when>",
 
+            "<when test='todo.costMillis!=null'>",
+            "costMillis = #{todo.costMillis},",
+            "</when>",
+
             "<when test='todo.startTime!=null'>",
             "startTime = #{todo.startTime},",
+            "</when>",
+
+            "<when test='todo.latestStartTime!=null'>",
+            "latestStartTime = #{todo.latestStartTime},",
             "</when>",
 
             "<when test='todo.endTime!=null'>",
@@ -111,8 +133,8 @@ public interface TodoMapper {
     int update(@Param("todo") Todo todo);
 
     @Insert({"<script>",
-            "insert into `Todo` (userId, `index`,name,category,time,status,tag,parentId,startTime,endTime,updateTime)",
-            "values (#{userId},#{index},#{name},#{category},#{time},#{status},#{tag},#{parentId},#{startTime},#{endTime},#{updateTime})",
+            "insert into `Todo` (userId, `index`,name,category,time,status,tag,parentId,costMillis,startTime,latestStartTime,endTime,updateTime)",
+            "values (#{userId},#{index},#{name},#{category},#{time},#{status},#{tag},#{parentId},#{costMillis},#{startTime},#{latestStartTime},#{endTime},#{updateTime})",
             "</script>"})
     int add(Todo todo);
 }

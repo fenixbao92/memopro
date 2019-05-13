@@ -28,6 +28,10 @@ public class Result {
         return new Result(500, msg, null);
     }
 
+    public static Result error(Integer status, String msg) {
+        return new Result(status, msg, null);
+    }
+
     private Result(Integer status, String msg, Object obj) {
         this.status = status;
         this.msg = msg;

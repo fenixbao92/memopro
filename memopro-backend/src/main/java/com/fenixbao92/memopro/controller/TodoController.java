@@ -1,5 +1,6 @@
 package com.fenixbao92.memopro.controller;
 
+import com.fenixbao92.memopro.common.exceptions.BussnessException;
 import com.fenixbao92.memopro.common.model.Todo;
 import com.fenixbao92.memopro.common.vo.TodoVo;
 import com.fenixbao92.memopro.common.vo.Result;
@@ -59,8 +60,8 @@ public class TodoController {
     }
 
     @RequestMapping("/changeStatus")
-    public Result changeStatus(Long todoId,String status,String action) {
-        if (todoService.changeStatus(todoId,status,action) == 1) {
+    public Result changeStatus(Long todoId,String action) {
+        if (todoService.changeStatus(todoId,action) == 1) {
             return Result.ok("更新状态成功!");
         }
         return Result.error("更新状态失败!");

@@ -18,8 +18,10 @@ public class Todo {
     private String status;
     private String tag;//健身 编程 人文阅读
     private Long parentId;
+    private Long costMillis;
     private String index;//编号如20190715#1
     private Date startTime;
+    private Date latestStartTime;
     private Date endTime;
     private Date updateTime;
 }

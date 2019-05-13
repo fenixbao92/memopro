@@ -20,4 +20,7 @@ public class TodoVo {
     private Date startTime;
     private Date endTime;
     private Date updateTime;
+
+    //front use
+    private String costTimeStr;
 }

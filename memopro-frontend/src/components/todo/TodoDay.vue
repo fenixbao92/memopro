@@ -114,7 +114,7 @@
               align="left"
               label="持续时间"
               min-width=35>
-              <template slot-scope="scope">{{useTime(scope.row.startTime,scope.row.endTime)}}</template>
+              <template slot-scope="scope">{{scope.row.costTimeStr}}</template>
             </el-table-column>
             <el-table-column
               align="left"
@@ -276,7 +276,7 @@
         } else if (currentStatus === '已完成'){
           result = [true,true,true,true];
         }
-        return [false,false,false,false];
+        return result;
       },
       initModelData() {
       },
@@ -292,6 +292,7 @@
           startTime: '',
           endTime: '',
           updateTime: '',
+          costTimeStr: '',
         }
       },
       loadModels() {
@@ -362,19 +363,8 @@
       },
       doit(row,action) {
         var _this = this;
-        var val = {"todoId": row.todoId, "status":row.status,"action": action};
+        var val = {"todoId": row.todoId, "action": action};
         this.postRequest("/todo/changeStatus", val).then(resp => {
-          _this.tableLoading = false;
-          if (resp && resp.status == 200) {
-            var data = resp.data;
-            _this.loadModels();
-          }
-        })
-      },
-      finishDo(row) {
-        var _this = this;
-        var val = {"todoId": row.todoId, status: "已完成"};
-        this.postRequest("/todo/update", val).then(resp => {
           _this.tableLoading = false;
           if (resp && resp.status == 200) {
             var data = resp.data;
