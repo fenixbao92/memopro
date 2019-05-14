@@ -41,7 +41,10 @@ public class VoConverter {
             Long time = todo.getCostMillis();
             todoVo.setCostTimeStr(getCostTimeStr(time));
         }
-
+        Long planTimeHours = todo.getPlanMillis()/1000/3600;
+        Long planTimeMinutes = (todo.getPlanMillis()/1000%3600)/60;
+        todoVo.setPlanTimeHour(planTimeHours.intValue());
+        todoVo.setPlanTimeMinute(planTimeMinutes.intValue());
         return todoVo;
     }
 
@@ -53,4 +56,5 @@ public class VoConverter {
         seconds = seconds % 60;
         return hour + "h" + minutes + "m" + seconds + "s";
     }
+
 }

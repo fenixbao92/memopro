@@ -22,5 +22,7 @@ public class TodoVo {
     private Date updateTime;
 
     //front use
+    private Integer planTimeHour;
+    private Integer planTimeMinute;
     private String costTimeStr;
 }

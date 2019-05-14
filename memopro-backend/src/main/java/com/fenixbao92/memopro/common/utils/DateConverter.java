@@ -13,6 +13,7 @@ public class DateConverter implements Converter<String,Date> {
         if ("".equals(s) || s == null) {
             return null;
         }
+        System.out.println(s);
         try {
             return simpleDateFormat.parse(s);
         } catch (ParseException e) {

@@ -107,6 +107,10 @@ public interface TodoMapper {
             "parentId = #{todo.parentId},",
             "</when>",
 
+            "<when test='todo.planMillis!=null'>",
+            "planMillis = #{todo.planMillis},",
+            "</when>",
+
             "<when test='todo.costMillis!=null'>",
             "costMillis = #{todo.costMillis},",
             "</when>",
@@ -133,8 +137,8 @@ public interface TodoMapper {
     int update(@Param("todo") Todo todo);
 
     @Insert({"<script>",
-            "insert into `Todo` (userId, `index`,name,category,time,status,tag,parentId,costMillis,startTime,latestStartTime,endTime,updateTime)",
-            "values (#{userId},#{index},#{name},#{category},#{time},#{status},#{tag},#{parentId},#{costMillis},#{startTime},#{latestStartTime},#{endTime},#{updateTime})",
+            "insert into `Todo` (userId, `index`,name,category,time,status,tag,parentId,planMillis,costMillis,startTime,latestStartTime,endTime,updateTime)",
+            "values (#{userId},#{index},#{name},#{category},#{time},#{status},#{tag},#{parentId},#{planMillis},#{costMillis},#{startTime},#{latestStartTime},#{endTime},#{updateTime})",
             "</script>"})
     int add(Todo todo);
 }

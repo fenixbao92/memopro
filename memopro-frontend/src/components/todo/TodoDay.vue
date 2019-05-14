@@ -65,6 +65,13 @@
             </el-table-column>
             <el-table-column
               align="left"
+              label="计划时间"
+              min-width=25
+            >
+            <template slot-scope="scope">{{(scope.row.planTimeHour)}}h{{(scope.row.planTimeMinute)}}m</template>
+            </el-table-column>
+            <el-table-column
+              align="left"
               prop="tag"
               label="标签"
               min-width=25
@@ -173,6 +180,20 @@
             </el-col>
           </el-row>
           <el-row>
+            <el-col :span="3">
+              <el-form-item label="计划时间,时:" prop="planHour">
+                <el-input prefix-icon="el-icon-edit" style="width: 70px" v-model="model.planTimeHour" size="mini"
+                          placeholder="h"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="3">
+              <el-form-item label="分:" prop="planMinute">
+                <el-input prefix-icon="el-icon-edit" style="width: 70px" v-model="model.planTimeMinute" size="mini"
+                          placeholder="m"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
             <el-col :span="6">
               <div>
                 <el-form-item label="时间:" prop="time">
@@ -232,6 +253,8 @@
         dialogVisible: false,
         model: this.getEmptyModel(),
         rules: {
+          planHour: [{required: true, message: '必填:时', trigger: 'blur'}],
+          planMinute: [{required: true, message: '必填:分', trigger: 'blur'}],
           name: [{required: true, message: '必填:待办内容', trigger: 'blur'}],
           time: [{required: true, message: '必填:时间', trigger: 'blur'}],
           tag: [{required: true, message: '必填:分类', trigger: 'blur'}],
@@ -292,6 +315,8 @@
           startTime: '',
           endTime: '',
           updateTime: '',
+          planTimeHour: 0,
+          planTimeMinute: 0,
           costTimeStr: '',
         }
       },
@@ -330,6 +355,7 @@
               //更新
               this.tableLoading = true;
               _this.model.parentId = '';
+              _this.model.planMillis = _this.model.planTimeHour * 1000 * 3600 + _this.model.planTimeMinute * 1000 * 60;
               this.postRequest("/todo/update", _this.model).then(resp => {
                 _this.tableLoading = false;
                 if (resp && resp.status == 200) {
@@ -346,6 +372,7 @@
               _this.model.status = "未开始";
               _this.model.category = "每日待办";
               _this.model.time = this.getTimeStr(_this.model.time);
+              _this.model.planMillis = _this.model.planTimeHour * 1000 * 3600 + _this.model.planTimeMinute * 1000 * 60;
               this.postRequest("/todo/add", _this.model).then(resp => {
                 _this.tableLoading = false;
                 if (resp && resp.status == 200) {
