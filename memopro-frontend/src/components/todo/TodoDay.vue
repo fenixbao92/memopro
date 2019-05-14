@@ -181,13 +181,13 @@
           </el-row>
           <el-row>
             <el-col :span="3">
-              <el-form-item label="计划时间,时:" prop="planHour">
+              <el-form-item label="计划时间,时:" prop="planTimeHour">
                 <el-input prefix-icon="el-icon-edit" style="width: 70px" v-model="model.planTimeHour" size="mini"
                           placeholder="h"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="3">
-              <el-form-item label="分:" prop="planMinute">
+              <el-form-item label="分:" prop="planTimeMinute">
                 <el-input prefix-icon="el-icon-edit" style="width: 70px" v-model="model.planTimeMinute" size="mini"
                           placeholder="m"></el-input>
               </el-form-item>
@@ -253,8 +253,8 @@
         dialogVisible: false,
         model: this.getEmptyModel(),
         rules: {
-          planHour: [{required: true, message: '必填:时', trigger: 'blur'}],
-          planMinute: [{required: true, message: '必填:分', trigger: 'blur'}],
+          planTimeHour: [{required: true, message: '必填:时', trigger: 'blur'}],
+          planTimeMinute: [{required: true, message: '必填:分', trigger: 'blur'}],
           name: [{required: true, message: '必填:待办内容', trigger: 'blur'}],
           time: [{required: true, message: '必填:时间', trigger: 'blur'}],
           tag: [{required: true, message: '必填:分类', trigger: 'blur'}],
