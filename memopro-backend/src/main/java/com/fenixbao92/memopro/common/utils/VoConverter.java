@@ -1,8 +1,10 @@
 package com.fenixbao92.memopro.common.utils;
 
+import com.fenixbao92.memopro.common.model.Book;
 import com.fenixbao92.memopro.common.model.Contact;
 import com.fenixbao92.memopro.common.model.Site;
 import com.fenixbao92.memopro.common.model.Todo;
+import com.fenixbao92.memopro.common.vo.BookVo;
 import com.fenixbao92.memopro.common.vo.ContactVo;
 import com.fenixbao92.memopro.common.vo.SiteVo;
 import com.fenixbao92.memopro.common.vo.TodoVo;
@@ -55,6 +57,12 @@ public class VoConverter {
         Long minutes = seconds / 60;
         seconds = seconds % 60;
         return hour + "h" + minutes + "m" + seconds + "s";
+    }
+
+    public static BookVo forBook(Book book){
+        BookVo bookVo = new BookVo();
+        BeanMapper.copy(book,bookVo);
+        return bookVo;
     }
 
 }

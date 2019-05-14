@@ -55,6 +55,9 @@ export const formatRoutes = (routes) => {
         else if (component === "TodoDay") {
           require(['../components/todo/' + component + '.vue'], resolve)
         }
+        else if (component === "ReadingList") {
+          require(['../components/reading/' + component + '.vue'], resolve)
+        }
         // else if (component.startsWith("Per")) {
         //   require(['../components/personnel/' + component + '.vue'], resolve)
         // } else if (component.startsWith("Sal")) {
