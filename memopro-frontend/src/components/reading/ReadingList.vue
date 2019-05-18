@@ -202,12 +202,12 @@
                   class="avatar-uploader"
                   action="/book/photoUpload/"
                   :show-file-list="false"
-                  :on-progress="handleProcess"
+                  :on-progress="handleProgress"
                   :on-success="handleSuccess"
                   :before-upload="beforeUpload">
-                  <el-progress v-if="model.pictureFlagStart == true" type="circle" :percentage="50"></el-progress>
                   <img v-if="model.url" :src="model.url" class="avatar">
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  <el-progress v-show="model.pictureFlagStart" type="circle" :percentage="model.uploadPercent" style="position: absolute;top:10%;left:15%;" ></el-progress>
                 </el-upload>
               </el-form-item>
             </el-col>
@@ -302,6 +302,7 @@
           remark: '',
           updateTime: '',
           pictureFlagStart: false,
+          uploadPercent:0,
         }
       },
       loadModels() {
@@ -422,10 +423,8 @@
         this.model.pictureFlagStart=true;
         return isLt2M;
       },
-      handleProcess(event, file, fileList){
-        console.log(event);
-        console.log(file);
-        console.log(fileList);
+      handleProgress(event, file, fileList){
+        this.model.uploadPercent = file.percentage.toFixed(0);
       }
     }
   };
