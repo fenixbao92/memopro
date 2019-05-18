@@ -23,18 +23,15 @@ public class BookService {
     @Resource
     UserService userService;
 
-    @Resource
-    OssService ossService;
-
     public List<BookVo> getList(String name, String status, String tag, Long offset, Integer size) {
         Long userId = userService.getCurrentUserId();
-        List<Book> list = bookMapper.getList(userId, status, name, tag, offset, size);
+        List<Book> list = bookMapper.getList(userId, name, status, tag, offset, size);
         return list.stream().map(VoConverter::forBook).collect(Collectors.toList());
     }
 
     public Long getCount(String name, String status, String tag) {
         Long userId = userService.getCurrentUserId();
-        return bookMapper.getCount(userId, status, name, tag);
+        return bookMapper.getCount(userId, name, status, tag);
     }
 
     public Boolean deleteByIds(String bookIds) {
