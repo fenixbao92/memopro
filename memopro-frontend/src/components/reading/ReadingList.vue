@@ -206,8 +206,8 @@
                   :on-success="handleSuccess"
                   :before-upload="beforeUpload">
                   <img v-if="model.url" :src="model.url" class="avatar">
-                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                  <el-progress v-show="model.pictureFlagStart" type="circle" :percentage="model.uploadPercent" style="position: absolute;top:10%;left:15%;" ></el-progress>
+                  <i v-else-if="model.pictureFlagStart==false" class="el-icon-plus avatar-uploader-icon"></i>
+                  <el-progress v-else type="circle" :percentage="getPercent()" ></el-progress>
                 </el-upload>
               </el-form-item>
             </el-col>
@@ -302,7 +302,7 @@
           remark: '',
           updateTime: '',
           pictureFlagStart: false,
-          uploadPercent:0,
+          uploadPercent: 0,
         }
       },
       loadModels() {
@@ -421,10 +421,14 @@
           this.$message.error('上传头像图片大小不能超过 5MB!');
         }
         this.model.pictureFlagStart=true;
+        this.model.url='';
         return isLt2M;
       },
       handleProgress(event, file, fileList){
         this.model.uploadPercent = file.percentage.toFixed(0);
+      },
+      getPercent(){
+        return parseInt(this.model.uploadPercent);
       }
     }
   };
