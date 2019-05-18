@@ -425,6 +425,9 @@
         return isLt2M;
       },
       handleProgress(event, file, fileList){
+        console.log(event);
+        console.log(file);
+        console.log(fileList);
         this.model.uploadPercent = file.percentage.toFixed(0);
       },
       getPercent(){
