@@ -202,8 +202,10 @@
                   class="avatar-uploader"
                   action="/book/photoUpload/"
                   :show-file-list="false"
-                  :on-success="handleAvatarSuccess"
-                  :before-upload="beforeAvatarUpload">
+                  :on-progress="handleProcess"
+                  :on-success="handleSuccess"
+                  :before-upload="beforeUpload">
+                  <el-progress v-if="model.pictureFlagStart == true" type="circle" :percentage="50"></el-progress>
                   <img v-if="model.url" :src="model.url" class="avatar">
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
@@ -299,6 +301,7 @@
           thoughts: '',
           remark: '',
           updateTime: '',
+          pictureFlagStart: false,
         }
       },
       loadModels() {
@@ -402,22 +405,28 @@
       },
 
       ////file upload
-      handleAvatarSuccess(res, file) {
+      handleSuccess(res, file) {
         // this.imageUrl = URL.createObjectURL(file.raw);
         this.model.url = res.obj;
+        this.model.pictureFlagStart=false;
       },
-      beforeAvatarUpload(file) {
+      beforeUpload(file) {
         // const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
+        const isLt2M = file.size / 1024 / 1024 < 5;
         // if (!isJPG) {
         //   this.$message.error('上传头像图片只能是 JPG 格式!');
         // }
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
+          this.$message.error('上传头像图片大小不能超过 5MB!');
         }
+        this.model.pictureFlagStart=true;
         return isLt2M;
+      },
+      handleProcess(event, file, fileList){
+        console.log(event);
+        console.log(file);
+        console.log(fileList);
       }
-
     }
   };
 </script>
