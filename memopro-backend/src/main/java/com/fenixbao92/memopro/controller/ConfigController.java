@@ -1,8 +1,6 @@
 package com.fenixbao92.memopro.controller;
 
-import com.fenixbao92.memopro.common.model.Contact;
 import com.fenixbao92.memopro.common.model.User;
-import com.fenixbao92.memopro.common.utils.UserUtil;
 import com.fenixbao92.memopro.common.vo.MenuVo;
 import com.fenixbao92.memopro.common.vo.Result;
 import com.fenixbao92.memopro.service.MenuService;
@@ -25,12 +23,12 @@ public class ConfigController {
 
     @RequestMapping("/sysmenu")
     public MenuVo sysmenu() {
-        return menuService.getMenusByUserId(userService.getCurrentUserByAccount().getUserId());
+        return menuService.getMenusByUserId(userService.getCurrentUser().getUserId());
     }
 
     @RequestMapping("/currentUser")
     public User currentUser() {
-        return userService.getCurrentUserByAccount();
+        return userService.getCurrentUser();
     }
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)

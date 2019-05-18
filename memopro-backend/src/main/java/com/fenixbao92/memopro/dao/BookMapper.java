@@ -14,6 +14,9 @@ public interface BookMapper {
             "<when test='name!=null and name!=\"\"'>",
             "AND name like concat('%',#{name},'%')",
             "</when>",
+            "<when test='status!=null and status!=\"\"'>",
+            "AND status = #{status}",
+            "</when>",
             "<when test='tag!=null and tag!=\"\"'>",
             "AND tag = #{tag}",
             "</when>",
@@ -21,6 +24,7 @@ public interface BookMapper {
             "</script>"})
     List<Book> getList(@Param("userId") Long userId,
                        @Param("name") String name,
+                       @Param("status") String status,
                        @Param("tag") String tag,
                        @Param("offset") Long offset,
                        @Param("size") Integer size);
@@ -31,12 +35,16 @@ public interface BookMapper {
             "<when test='name!=null and name!=\"\"'>",
             "AND name like concat('%',#{name},'%') ",
             "</when>",
+            "<when test='status!=null and status!=\"\"'>",
+            "AND status = #{status}",
+            "</when>",
             "<when test='tag!=null and tag!=\"\"'>",
             "AND tag = #{tag}",
             "</when>",
             "</script>"})
     Long getCount(@Param("userId") Long userId,
                   @Param("name") String name,
+                  @Param("status") String status,
                   @Param("tag") String tag);
 
 
@@ -53,6 +61,10 @@ public interface BookMapper {
             "update Book",
             "<set>",
 
+            "<when test='book.index!=null'>",
+            "`index` = #{book.index},",
+            "</when>",
+
             "<when test='book.name!=null'>",
             "name = #{book.name},",
             "</when>",
@@ -61,12 +73,12 @@ public interface BookMapper {
             "url = #{book.url},",
             "</when>",
 
-            "<when test='book.account!=null'>",
-            "account = #{book.account},",
+            "<when test='book.thoughts!=null'>",
+            "thoughts = #{book.thoughts},",
             "</when>",
 
-            "<when test='book.password!=null'>",
-            "password = #{book.password},",
+            "<when test='book.status!=null'>",
+            "status = #{book.status},",
             "</when>",
 
             "<when test='book.tag!=null'>",
@@ -87,8 +99,8 @@ public interface BookMapper {
     int update(@Param("book") Book book);
 
     @Insert({"<script>",
-            "insert into `Book` (userId,name,url,account,password,tag,remark,updateTime)",
-            "values (#{userId},#{name},#{url},#{account},#{password},#{tag},#{remark},#{updateTime})",
+            "insert into `Book` (userId,`index`,name,url,thoughts,status,tag,remark,updateTime)",
+            "values (#{userId},#{index},#{name},#{url},#{thoughts},#{status},#{tag},#{remark},#{updateTime})",
             "</script>"})
     int add(Book book);
 }

@@ -1,7 +1,6 @@
 package com.fenixbao92.memopro.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fenixbao92.memopro.common.utils.UserUtil;
 import com.fenixbao92.memopro.common.vo.Result;
 import com.fenixbao92.memopro.service.UserService;
 import org.springframework.context.annotation.Configuration;
@@ -104,7 +103,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                                         HttpServletResponse resp,
                                                         Authentication auth) throws IOException {
                         resp.setContentType("application/json;charset=utf-8");
-                        Result result = Result.ok("登录成功!", userService.getCurrentUserVoByAccount());
+                        Result result = Result.ok("登录成功!", userService.getCurrentUserVo());
                         ObjectMapper om = new ObjectMapper();
                         PrintWriter out = resp.getWriter();
                         out.write(om.writeValueAsString(result));

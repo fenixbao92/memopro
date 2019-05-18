@@ -22,13 +22,13 @@ public class TodoService {
     UserService userService;
 
     public List<TodoVo> getList(String time, String category, String status, String tag, Long offset, Integer size) {
-        Long userId = userService.getCurrentUserIdByAccount();
+        Long userId = userService.getCurrentUserId();
         List<Todo> list = todoMapper.getList(null,userId, time, category, status, tag, offset, size);
         return list.stream().map(VoConverter::forTodo).collect(Collectors.toList());
     }
 
     public Long getCount(String time, String category, String status, String tag) {
-        Long userId = userService.getCurrentUserIdByAccount();
+        Long userId = userService.getCurrentUserId();
         return todoMapper.getCount(null,userId, time, category, status, tag);
     }
 
@@ -62,7 +62,7 @@ public class TodoService {
 
 
     public int add(Todo todo) {
-        Long userId = userService.getCurrentUserIdByAccount();
+        Long userId = userService.getCurrentUserId();
         todo.setUserId(userId);
         todo.setUpdateTime(new Date());
         Long count = getCount(todo.getTime(), null, null, null);

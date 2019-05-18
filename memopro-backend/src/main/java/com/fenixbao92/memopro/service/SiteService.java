@@ -21,13 +21,13 @@ public class SiteService {
     UserService userService;
 
     public List<SiteVo> getList(String name, String tag, Long offset, Integer size) {
-        Long userId = userService.getCurrentUserIdByAccount();
+        Long userId = userService.getCurrentUserId();
         List<Site> list = siteMapper.getList(userId, name, tag, offset, size);
         return list.stream().map(VoConverter::forSite).collect(Collectors.toList());
     }
 
     public Long getCount(String name, String tag) {
-        Long userId = userService.getCurrentUserIdByAccount();
+        Long userId = userService.getCurrentUserId();
         return siteMapper.getCount(userId, name, tag);
     }
 
@@ -43,7 +43,7 @@ public class SiteService {
 
 
     public int add(Site site) {
-        Long userId = userService.getCurrentUserIdByAccount();
+        Long userId = userService.getCurrentUserId();
         site.setUserId(userId);
         site.setUpdateTime(new Date());
         return siteMapper.add(site);

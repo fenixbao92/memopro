@@ -1,14 +1,16 @@
 package com.fenixbao92.memopro.controller;
-import com.alibaba.fastjson.JSON;
+
 import com.fenixbao92.memopro.common.model.Book;
-import com.fenixbao92.memopro.common.model.Todo;
-import com.fenixbao92.memopro.common.utils.BeanMapper;
 import com.fenixbao92.memopro.common.vo.BookVo;
 import com.fenixbao92.memopro.common.vo.Result;
 import com.fenixbao92.memopro.service.BookService;
+import com.fenixbao92.memopro.service.oss.OssService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,18 +24,19 @@ public class BookController {
 
     @RequestMapping(value = "/page/{offset}/{size}")
     public Map<String, Object> getPage(@RequestParam(required = false) String name,
+                                       @RequestParam(required = false) String status,
                                        @RequestParam(required = false) String tag,
                                        @PathVariable Long offset,
                                        @PathVariable Integer size) {
-        List<BookVo> bookVoList = bookService.getList(name, tag, offset, size);
-        Long count = bookService.getCount(name, tag);
+        List<BookVo> bookVoList = bookService.getList(name, status, tag, offset, size);
+        Long count = bookService.getCount(name, status, tag);
         Map<String, Object> map = new HashMap<>();
         map.put("books", bookVoList);
         map.put("count", count);
         return map;
     }
 
-    @RequestMapping(value = "/add",method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Result add(Book book) {
         if (bookService.add(book) == 1) {
             return Result.ok("添加成功!");
@@ -43,7 +46,7 @@ public class BookController {
 
     @RequestMapping("/delete")
     public Result delete(@RequestParam String bookIds) {
-        if(bookService.deleteByIds(bookIds)){
+        if (bookService.deleteByIds(bookIds)) {
             return Result.ok("删除成功!");
         }
         return Result.error("删除失败!");
@@ -57,15 +60,15 @@ public class BookController {
         return Result.error("更新失败!");
     }
 
-
-    public static void main(String[] args){
-        Todo todo = new Todo();
-        Todo todo1 = new Todo();
-        todo.setName("dddd");
-        System.out.println(JSON.toJSON(todo));
-        System.out.println(JSON.toJSON(todo1));
-        BeanMapper.copy(todo,todo1);
-        System.out.println(JSON.toJSON(todo1));
+    @RequestMapping("/photoUpload")
+    public Result photoUpload(MultipartHttpServletRequest multiReq)
+            throws IOException {
+        MultipartFile file = multiReq.getFile("file");
+        return Result.ok("上传成功!",bookService.uploadCover(file));
+//        return WrapMapper.wrap(
+//                Wrapper.SUCCESS_CODE,
+//                Wrapper.SUCCESS_MESSAGE,
+//                "http://localhost:8080/img/" + localFileName);//这里是我执行封装的返回结果，也可以使用map,
     }
 }
 

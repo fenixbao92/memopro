@@ -3,10 +3,7 @@ package com.fenixbao92.memopro.service.oss;
 import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSException;
-import com.aliyun.oss.model.BucketInfo;
-import com.aliyun.oss.model.OSSObject;
-import com.aliyun.oss.model.OSSObjectSummary;
-import com.aliyun.oss.model.ObjectListing;
+import com.aliyun.oss.model.*;
 import com.fenixbao92.memopro.controller.ContactController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +26,7 @@ public class OssService {
     // endpoint的格式形如“http://oss-cn-hangzhou.aliyuncs.com/”，注意http://后不带bucket名称，
     // 比如“http://bucket-name.oss-cn-hangzhou.aliyuncs.com”，是错误的endpoint，请去掉其中的“bucket-name”。
     private static String endpoint = "http://oss-cn-beijing.aliyuncs.com";
+    private static String endpointDomain = "oss-cn-beijing.aliyuncs.com";
 
     // accessKeyId和accessKeySecret是OSS的访问密钥，您可以在控制台上创建和查看，
     // 创建和查看访问密钥的链接地址是：https://ak-console.aliyun.com/#/。
@@ -44,7 +42,7 @@ public class OssService {
     // Object命名规范如下：使用UTF-8编码，长度必须在1-1023字节之间，不能以“/”或者“\”字符开头。
     private static String firstKey = "1fbdfa0bf3ae7675c1dc8429de4d458.jpg";
 
-    public static void getBucketInfo(){
+    public void getBucketInfo(){
 
         OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
 
@@ -66,7 +64,7 @@ public class OssService {
         System.out.println("\t用户标志：" + info.getBucket().getOwner());
     }
 
-    public static void storeStr(String key,String content){
+    public void storeStr(String key,String content){
         // 把字符串存入OSS，Object的名称为firstKey。详细请参看“SDK手册 > Java-SDK > 上传文件”。
         // 链接地址是：https://help.aliyun.com/document_detail/oss/sdk/java-sdk/upload_object.html?spm=5176.docoss/user_guide/upload_object
         OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
@@ -75,7 +73,17 @@ public class OssService {
         System.out.println("Object：" + key + "存入OSS成功。");
     }
 
-    public static void storeFile(String key,File file){
+    public String storeInputStream(String key,InputStream is){
+        // 把字符串存入OSS，Object的名称为firstKey。详细请参看“SDK手册 > Java-SDK > 上传文件”。
+        // 链接地址是：https://help.aliyun.com/document_detail/oss/sdk/java-sdk/upload_object.html?spm=5176.docoss/user_guide/upload_object
+        OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+//        InputStream is = new ByteArrayInputStream(content.getBytes());
+        PutObjectResult putObjectResult =ossClient.putObject(bucketName, key, is);
+        System.out.println("Object：" + key + "存入OSS成功。");
+        return getUrlByKey(key);
+    }
+
+    public void storeFile(String key,File file){
         // 文件存储入OSS，Object的名称为fileKey。详细请参看“SDK手册 > Java-SDK > 上传文件”。
         // 链接地址是：https://help.aliyun.com/document_detail/oss/sdk/java-sdk/upload_object.html?spm=5176.docoss/user_guide/upload_object
         OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
@@ -83,7 +91,7 @@ public class OssService {
         System.out.println("Object：" + key + "存入OSS成功。");
     }
 
-    public static void download(String key){
+    public void download(String key){
         try {
             OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
             OSSObject ossObject = ossClient.getObject(bucketName, key);
@@ -103,7 +111,7 @@ public class OssService {
         }
     }
 
-    public static void listObject(){
+    public void listObject(){
         OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
         // 查看Bucket中的Object。详细请参看“SDK手册 > Java-SDK > 管理文件”。
         // 链接地址是：https://help.aliyun.com/document_detail/oss/sdk/java-sdk/manage_object.html?spm=5176.docoss/sdk/java-sdk/manage_bucket
@@ -115,12 +123,16 @@ public class OssService {
         }
     }
 
-    public static void deleteObject(String key){
+    public void deleteObject(String key){
         OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
         // 删除Object。详细请参看“SDK手册 > Java-SDK > 管理文件”。
         // 链接地址是：https://help.aliyun.com/document_detail/oss/sdk/java-sdk/manage_object.html?spm=5176.docoss/sdk/java-sdk/manage_bucket
         ossClient.deleteObject(bucketName, key);
         System.out.println("删除Object：" + key + "成功。");
+    }
+
+    public String getUrlByKey(String key){
+        return "https://"+bucketName+"."+endpointDomain+"/"+key;
     }
 
     public static void main1(String[] args) {

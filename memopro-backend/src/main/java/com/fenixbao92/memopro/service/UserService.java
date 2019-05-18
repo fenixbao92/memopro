@@ -21,18 +21,18 @@ public class UserService {
     @Resource
     User2RoleMapper user2RoleMapper;
 
-    public User getCurrentUserByAccount(){
+    public User getCurrentUser(){
         return userMapper.loadUserByAccount(UserUtil.getAccountofCurrentUser());
     }
 
-    public UserVo getCurrentUserVoByAccount(){
-        User user= getCurrentUserByAccount();
+    public UserVo getCurrentUserVo(){
+        User user= getCurrentUser();
         String [] roles = UserUtil.getRolesofCurrentUser();
         return new UserVo(user.getAccount(),user.getAvatar(),roles,user.getStatus());
     }
 
-    public Long getCurrentUserIdByAccount(){
-        User user= getCurrentUserByAccount();
+    public Long getCurrentUserId(){
+        User user= getCurrentUser();
         return user.getUserId();
     }
 

@@ -11,12 +11,13 @@ import java.util.Date;
 @ToString
 public class Book {
 
-    private Long siteId;
+    private Long bookId;
     private Long userId;
-    private String name;
-    private String url;
-    private String account;
-    private String password;
+    private String index;//编号
+    private String name;//书名
+    private String url;//封面url
+    private String thoughts;//心得
+    private String status;
     private String tag;
     private String remark;
     private Date updateTime;
