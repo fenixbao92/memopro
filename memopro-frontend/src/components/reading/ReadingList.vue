@@ -200,10 +200,11 @@
               <el-form-item label="封面图:">
                 <el-upload
                   class="avatar-uploader"
-                  action="/book/photoUpload/"
+                  action=""
                   :show-file-list="false"
-                  :on-progress="handleProgress"
+                  :http-request="uploadRequest"
                   :on-success="handleSuccess"
+                  :on-progress="handleProcess"
                   :before-upload="beforeUpload">
                   <img v-if="model.url" :src="model.url" class="avatar">
                   <i v-else-if="model.pictureFlagStart==false" class="el-icon-plus avatar-uploader-icon"></i>
@@ -249,6 +250,13 @@
 </template>
 <script>
   import {nextDate} from "element-ui/lib/utils/date-util";
+  const OSS = require('ali-oss');
+  let client = new OSS({
+    region: 'oss-cn-beijing',
+    accessKeyId: 'LTAIOGea9stcsT8X',
+    accessKeySecret: 'uKV9WxNoqp12SIKftJnLVe36FT6MhF',
+    bucket: 'aliyun-oss-bucket-test'
+  });
 
   export default {
     data() {
@@ -279,15 +287,6 @@
       this.loadModels();
     },
     methods: {
-      getTimeStr(str) {
-        let date = new Date();
-        if (str === '明天') {
-          date = nextDate(date, 1);
-        } else if (str === '后天') {
-          date = nextDate(date, 2);
-        }
-        return this.formatDayTime(date);
-      },
       initModelData() {
       },
       getEmptyModel() {
@@ -406,9 +405,9 @@
       },
 
       ////file upload
-      handleSuccess(res, file) {
+      handleSuccess(url) {
         // this.imageUrl = URL.createObjectURL(file.raw);
-        this.model.url = res.obj;
+        this.model.url = url;
         this.model.pictureFlagStart=false;
       },
       beforeUpload(file) {
@@ -424,16 +423,62 @@
         this.model.url='';
         return isLt2M;
       },
-      handleProgress(event, file, fileList){
-        console.log(event);
-        console.log(file);
-        console.log(fileList);
-        this.model.uploadPercent = file.percentage.toFixed(0);
+      handleProcess(obj){
+        this.model.uploadPercent = obj.percent;
+      },
+      uploadRequest(option){
+        var _this = this;
+        const self = this;
+        let file = option.file;
+        // let type = file.type;
+        // let size = file.size;
+        let pos = file.name.lastIndexOf('.');
+        // let filename = file.name.substring(0, pos);
+        let extendName = file.name.substring(pos + 1);
+        console.log(option);
+
+        // client.list({
+        //   'max-keys': 10
+        // }).then(function (result) {
+        //   console.log(result);
+        // }).catch(function (err) {
+        //   console.log(err);
+        // });
+         let timetamp = new Date().getTime();
+        // let storeAs = 'upload/' + timetamp +'.'+ extendName;
+        let storeAs = this.user().account + timetamp + 'uploadBookCover' + '.'+ extendName;
+        //storeAs表示上传的object name , file表示上传的文件
+        // 这里client是aliyun oss的上传api
+        client.multipartUpload(storeAs, file, {
+          progress: function (p, checkpoint) {
+            console.log(p);
+            option.onProgress({percent: Math.floor(p * 100)}); // 触发el-upload组件的onProgress方法
+          },
+          // mime: type,
+        }).then(function (result) {
+          console.log(result);
+          if (result.res.status === 200) {
+            // 上传之后的文件地址
+            let uploadedUrl = result.res.requestUrls[0];
+            uploadedUrl = result.res.requestUrls[0].split("?")[0];
+            option.onSuccess(uploadedUrl); // 触发el-upload组件的onSuccess方法
+          }
+        }).catch(function (err) {
+          console.log(err);
+          // option.onError('上传失败'); // 触发el-upload组件的onError方法，此方法会移除文件列表
+          self.$message({
+            message: '上传失败，请重试',
+            type: 'warning'
+          });
+        });
       },
       getPercent(){
         return parseInt(this.model.uploadPercent);
-      }
-    }
+      },
+      user() {
+        return this.$store.state.user;
+      },
+    },
   };
 </script>
 <style>

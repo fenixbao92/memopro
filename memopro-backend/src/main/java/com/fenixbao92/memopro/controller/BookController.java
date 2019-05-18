@@ -60,16 +60,6 @@ public class BookController {
         return Result.error("更新失败!");
     }
 
-    @RequestMapping("/photoUpload")
-    public Result photoUpload(MultipartHttpServletRequest multiReq)
-            throws IOException {
-        MultipartFile file = multiReq.getFile("file");
-        return Result.ok("上传成功!",bookService.uploadCover(file));
-//        return WrapMapper.wrap(
-//                Wrapper.SUCCESS_CODE,
-//                Wrapper.SUCCESS_MESSAGE,
-//                "http://localhost:8080/img/" + localFileName);//这里是我执行封装的返回结果，也可以使用map,
-    }
 }
 
 

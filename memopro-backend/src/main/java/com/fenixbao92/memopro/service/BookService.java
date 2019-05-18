@@ -55,12 +55,4 @@ public class BookService {
         return bookMapper.add(book);
     }
 
-    public String uploadCover(MultipartFile file) throws IOException {
-        Long userId = userService.getCurrentUserId();
-        String originalFilename = file.getOriginalFilename();
-        String suffix = originalFilename.substring(originalFilename.indexOf("."));
-        String key = userId + "*" + System.currentTimeMillis()+"bookCover"+suffix;
-        String url = ossService.storeInputStream(key, file.getInputStream());
-        return url;
-    }
 }
