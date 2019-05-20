@@ -2,12 +2,16 @@ package com.fenixbao92.memopro.dao;
 
 import com.fenixbao92.memopro.common.model.Book;
 import org.apache.ibatis.annotations.*;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 
 @Mapper
 public interface BookMapper {
 
+    @Cacheable(value = "memopro_book_cache")
     @Select({"<script>",
             "SELECT * FROM Book",
             "WHERE userId = #{userId} ",
@@ -29,6 +33,7 @@ public interface BookMapper {
                        @Param("offset") Long offset,
                        @Param("size") Integer size);
 
+    @Cacheable(value = "memopro_book_cache")
     @Select({"<script>",
             "SELECT count(1)FROM Book",
             "WHERE userId = #{userId} ",
@@ -47,7 +52,7 @@ public interface BookMapper {
                   @Param("status") String status,
                   @Param("tag") String tag);
 
-
+    @CacheEvict("memopro_book_cache")
     @Delete({"<script>",
             "delete FROM Book",
             "WHERE bookId in",
@@ -57,6 +62,7 @@ public interface BookMapper {
             "</script>"})
     int deleteByIds(@Param("ids") String[] ids);
 
+    @CachePut("memopro_book_cache")
     @Update({"<script>",
             "update Book",
             "<set>",
