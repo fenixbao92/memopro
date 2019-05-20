@@ -19,7 +19,7 @@ public class WxProxyController {
     @RequestMapping("/codeAuth")
     public Result codeAuth(@RequestParam String code) {
         WxCodeAuthResult wxCodeAuthResult = wxProxyService.codeAuth(code);
-        return Result.ok("wxCodeAuthResult");
+        return Result.ok(wxCodeAuthResult);
     }
 
 }

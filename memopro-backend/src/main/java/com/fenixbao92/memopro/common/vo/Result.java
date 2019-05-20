@@ -16,6 +16,10 @@ public class Result {
         return new Result(200, msg, obj);
     }
 
+    public static Result ok(Object obj) {
+        return new Result(200, "success", obj);
+    }
+
     public static Result ok(String msg) {
         return new Result(200, msg, null);
     }
