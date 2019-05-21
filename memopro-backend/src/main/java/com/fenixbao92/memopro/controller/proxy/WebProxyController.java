@@ -12,6 +12,6 @@ public class WebProxyController {
 
     @RequestMapping("/frontpage/redirect")
     public String codeAuth1(HttpServletRequest httpServletRequest) {
-        return "redirect:/index.html";
+        return "redirect:/";
     }
 }
