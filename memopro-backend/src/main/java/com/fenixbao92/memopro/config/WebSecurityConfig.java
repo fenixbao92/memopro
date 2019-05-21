@@ -66,8 +66,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 })
                 .and()
 //                .formLogin().loginPage("/login_p").loginProcessingUrl("/login")
-                .formLogin()
-//                .formLogin().loginPage("/webproxy/frontpage/redirect")
+//                .formLogin()
+                .formLogin().loginPage("/webproxy/frontpage/redirect")
                 .usernameParameter("username").passwordParameter("password")
                 .failureHandler(new AuthenticationFailureHandler() {
                     @Override
