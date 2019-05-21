@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/webproxy")
 public class WebProxyController {
 
-    @RequestMapping("/frontpage/redirect/")
+    @RequestMapping("/frontpage/redirect")
     public String codeAuth1(HttpServletRequest httpServletRequest) {
         return "redirect:/index.html";
     }
