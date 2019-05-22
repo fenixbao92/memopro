@@ -10,7 +10,7 @@ public interface WxUserMapper {
 
     @Select({"<script>",
             "SELECT * FROM WxUser",
-            "WHERE",
+            "WHERE 1=1",
             "<when test='wxUserId!=null'>",
             "AND wxUserId = #{wxUserId}",
             "</when>",
@@ -30,7 +30,7 @@ public interface WxUserMapper {
 
     @Select({"<script>",
             "SELECT count(1)FROM WxUser",
-            "WHERE",
+            "WHERE 1=1",
             "<when test='wxUserId!=null'>",
             "AND wxUserId = #{wxUserId}",
             "</when>",
