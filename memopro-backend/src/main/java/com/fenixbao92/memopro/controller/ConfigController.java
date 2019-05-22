@@ -33,9 +33,7 @@ public class ConfigController {
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     public Result add(User user) {
-        if (userService.register(user) == 1) {
-            return Result.ok("注册成功!");
-        }
-        return Result.error("注册失败!");
+        userService.register(user.getAccount(),user.getPassword());
+        return Result.ok();
     }
 }

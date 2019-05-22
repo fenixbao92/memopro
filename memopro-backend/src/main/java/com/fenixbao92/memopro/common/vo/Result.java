@@ -16,6 +16,10 @@ public class Result {
         return new Result(200, msg, obj);
     }
 
+    public static Result ok() {
+        return new Result(200, "操作成功", null);
+    }
+
     public static Result needLogin() {
         return new Result(402, "需要登录", null);
 
