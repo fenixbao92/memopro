@@ -22,7 +22,14 @@ axios.interceptors.response.use(data => {
     Message.error({message: '权限不足,请联系管理员!'});
   } else if (err.response.status == 401) {
     Message.error({message: err.response.data.msg});
-  } else {
+  }else if(err.response.status == 402){
+    Message.error({message: '登录失效 请重新登录'});
+    router.replace({
+      path: '/',
+      query: {redirect: router.currentRoute.fullPath}
+    })
+  }
+  else {
     if (err.response.data.msg) {
       Message.error({message: err.response.data.msg});
     }else{

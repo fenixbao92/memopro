@@ -1,18 +1,19 @@
 package com.fenixbao92.memopro.controller.proxy;
 
 
+import com.fenixbao92.memopro.common.vo.Result;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Controller
+@RestController
 @RequestMapping("/webproxy")
 public class WebProxyController {
 
-    @RequestMapping("/frontpage/redirect")
-    public String codeAuth1(HttpServletRequest httpServletRequest) {
-        System.out.println(httpServletRequest.getRequestURI());
-        return "redirect:/";
+    @RequestMapping("/needlogin")
+    public Result needlogin() {
+        return Result.needLogin();
     }
 }
