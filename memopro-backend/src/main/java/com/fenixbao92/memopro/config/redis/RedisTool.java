@@ -24,17 +24,18 @@ public class RedisTool {
     @Autowired
     private JedisPool jedisPool;
 
-    public String get(String key,int indexdb) {
+    public String get(String key) {
         Jedis jedis = null;
         String value = null;
         try {
             jedis = jedisPool.getResource();
-            jedis.select(indexdb);
             value = jedis.get(key);
         } catch (Exception e) {
             log.error(e.getMessage());
         } finally {
-           jedisPool.close();
+            if(jedis!=null){
+                jedisPool.close();
+            }
         }
         return value;
     }
@@ -47,7 +48,9 @@ public class RedisTool {
         } catch (Exception e) {
             log.error(e.getMessage());
         } finally {
-            jedisPool.close();
+            if(jedis!=null){
+                jedisPool.close();
+            }
         }
         return null;
     }
