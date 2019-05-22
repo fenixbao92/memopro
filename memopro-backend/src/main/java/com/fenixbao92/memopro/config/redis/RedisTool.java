@@ -34,7 +34,7 @@ public class RedisTool {
             log.error(e.getMessage());
         } finally {
             if(jedis!=null){
-                jedisPool.close();
+                jedis.close();
             }
         }
         return value;
@@ -49,7 +49,7 @@ public class RedisTool {
             log.error(e.getMessage());
         } finally {
             if(jedis!=null){
-                jedisPool.close();
+                jedis.close();
             }
         }
         return null;
