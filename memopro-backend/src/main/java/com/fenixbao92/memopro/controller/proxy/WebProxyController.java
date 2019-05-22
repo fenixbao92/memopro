@@ -12,6 +12,7 @@ public class WebProxyController {
 
     @RequestMapping("/frontpage/redirect")
     public String codeAuth1(HttpServletRequest httpServletRequest) {
+        System.out.println(httpServletRequest.getRequestURI());
         return "redirect:/";
     }
 }

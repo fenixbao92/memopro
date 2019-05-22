@@ -50,7 +50,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/", "/login","/index.html", "/config/register", "/static/**", "/favicon.ico", "/wxproxy/**", "/webproxy/*/**");
+        web.ignoring().antMatchers("/","/index.html", "/config/register", "/static/**", "/favicon.ico", "/wxproxy/**", "/webproxy/*/**");
+                                            // login_p
     }
 
     @Override
@@ -67,7 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
 //                .formLogin().loginPage("/login_p").loginProcessingUrl("/login")
 //                .formLogin()
-                .formLogin().loginPage("/webproxy/frontpage/redirect")
+                .formLogin().loginPage("/webproxy/frontpage/redirect").loginProcessingUrl("/login")
                 .usernameParameter("username").passwordParameter("password")
                 .failureHandler(new AuthenticationFailureHandler() {
                     @Override
