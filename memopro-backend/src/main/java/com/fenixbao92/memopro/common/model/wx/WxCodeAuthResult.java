@@ -13,4 +13,6 @@ public class WxCodeAuthResult {
     private String unionid;
     private String errcode;
     private String errmsg;
+
+    private Long timestamp;
 }

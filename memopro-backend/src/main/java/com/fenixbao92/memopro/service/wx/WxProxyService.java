@@ -14,6 +14,8 @@ public class WxProxyService {
         String codeAuthUrl = WxConstant.getCodeAuthUrl(code);
         log.info("ProxyService,codeAuthUrl:{}",codeAuthUrl);
         String result = HttpUtil.get(codeAuthUrl);
-        return JSON.parseObject(result,WxCodeAuthResult.class);
+        WxCodeAuthResult wxCodeAuthResult = JSON.parseObject(result,WxCodeAuthResult.class);
+        wxCodeAuthResult.setTimestamp(System.currentTimeMillis());
+        return wxCodeAuthResult;
     }
 }
