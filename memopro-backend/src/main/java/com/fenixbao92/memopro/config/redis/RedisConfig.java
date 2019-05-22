@@ -24,8 +24,8 @@ public class RedisConfig {
     @Value("${spring.redis.jedis.pool.max-idle}")
     private int maxIdle;
 
-    @Value("${spring.redis.jedis.pool.max-wait}")
-    private long maxWaitMillis;
+//    @Value("${spring.redis.jedis.pool.max-wait}")
+//    private long maxWaitMillis;
 
     @Value("${spring.redis.password}")
     private String password;
@@ -39,7 +39,7 @@ public class RedisConfig {
         log.info("redis地址：" + host + ":" + port);
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxIdle(maxIdle);
-        jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
+        jedisPoolConfig.setMaxWaitMillis(-1);
         // 连接耗尽时是否阻塞, false报异常,ture阻塞直到超时, 默认true
         jedisPoolConfig.setBlockWhenExhausted(true);
         // 是否启用pool的jmx管理功能, 默认true
