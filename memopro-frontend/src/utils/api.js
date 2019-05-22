@@ -13,7 +13,7 @@ axios.interceptors.response.use(data => {
   }
   if (data.status && data.status == 200 && data.data.status == 402) {
     Message.error({message: '登录失效 请重新登录'});
-    router.replace({
+    router.push({
       path: '/',
       query: {redirect: router.currentRoute.fullPath}
     })
