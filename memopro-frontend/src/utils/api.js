@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {Message} from 'element-ui'
+import Router from '@/router/index'
 axios.interceptors.request.use(config => {
   return config;
 }, err => {
@@ -13,9 +14,9 @@ axios.interceptors.response.use(data => {
   }
   if (data.status && data.status == 200 && data.data.status == 402) {
     Message.error({message: '登录失效 请重新登录'});
-    router.push({
+    Router.push({
       path: '/',
-      query: {redirect: router.currentRoute.fullPath}
+      query: {redirect: Router.currentRoute.fullPath}
     })
     return;
   }
