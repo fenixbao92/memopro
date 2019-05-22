@@ -309,6 +309,7 @@
         this.tableLoading = true;
         this.getRequest("/book/page/" + (this.currentPage - 1) * 10 + "/10" + "?status=" + this.searchStatus + "&tag=" + this.searchTag + "&name=" + this.searchName).then(resp => {
           this.tableLoading = false;
+          console.log(resp);
           if (resp && resp.status == 200) {
             var data = resp.data;
 
