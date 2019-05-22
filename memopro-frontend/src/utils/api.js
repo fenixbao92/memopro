@@ -11,6 +11,14 @@ axios.interceptors.response.use(data => {
     Message.error({message: data.data.msg});
     return;
   }
+  if (data.status && data.status == 200 && data.data.status == 403) {
+    Message.error({message: '登录失效 请重新登录'});
+    router.replace({
+      path: '/',
+      query: {redirect: router.currentRoute.fullPath}
+    })
+    return;
+  }
   if (data.data.msg) {
     Message.success({message: data.data.msg});
   }
@@ -22,14 +30,7 @@ axios.interceptors.response.use(data => {
     Message.error({message: '权限不足,请联系管理员!'});
   } else if (err.response.status == 401) {
     Message.error({message: err.response.data.msg});
-  }else if(err.response.status == 402){
-    Message.error({message: '登录失效 请重新登录'});
-    router.replace({
-      path: '/',
-      query: {redirect: router.currentRoute.fullPath}
-    })
-  }
-  else {
+  } else {
     if (err.response.data.msg) {
       Message.error({message: err.response.data.msg});
     }else{
