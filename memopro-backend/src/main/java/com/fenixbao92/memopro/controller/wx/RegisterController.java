@@ -1,6 +1,8 @@
 package com.fenixbao92.memopro.controller.wx;
 
+import com.fenixbao92.memopro.common.constants.WxConstant;
 import com.fenixbao92.memopro.common.exceptions.BussnessException;
+import com.fenixbao92.memopro.common.exceptions.WxException;
 import com.fenixbao92.memopro.common.model.Book;
 import com.fenixbao92.memopro.common.vo.Result;
 import com.fenixbao92.memopro.common.vo.wx.WxRegisterVo;
@@ -30,7 +32,7 @@ public class RegisterController {
     @RequestMapping(value = "/test")
     public Result test(Integer c) {
         if(c==1){
-            throw new BussnessException();
+            throw new WxException(WxConstant.WxExceptionEnum.SESSION_INVALID);
         }
         return Result.ok();
     }

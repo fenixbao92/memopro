@@ -1,5 +1,8 @@
 package com.fenixbao92.memopro.common.constants;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class WxConstant {
     public static String appid = "wx6a56c80f9f5aa662";
     public static String secret = "36c999855e2d5df487a7789ea6e3f24f";
@@ -10,7 +13,19 @@ public class WxConstant {
         result = result.replace("JSCODE",code);
         return result;
     }
-    public static void main(String[] args){
-        System.out.println(getCodeAuthUrl("aaa"));
+
+    @Getter
+    public enum  WxExceptionEnum {
+        SESSION_INVALID("session invalid", 601),
+        ;
+
+        private String description;
+        private int code;
+
+        WxExceptionEnum (String description, int code) {
+            this.description = description;
+            this.code = code;
+        }
+
     }
 }
