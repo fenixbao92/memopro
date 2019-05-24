@@ -1,7 +1,8 @@
 package com.fenixbao92.memopro.service.wx;
 
 import com.alibaba.fastjson.JSON;
-import com.fenixbao92.memopro.common.exceptions.BussnessException;
+import com.fenixbao92.memopro.common.constants.BusinessExceptionEnum;
+import com.fenixbao92.memopro.common.exceptions.BusinessException;
 import com.fenixbao92.memopro.common.model.User;
 import com.fenixbao92.memopro.common.model.wx.WxCodeAuthResult;
 import com.fenixbao92.memopro.common.model.wx.WxUser;
@@ -52,7 +53,7 @@ public class WxService {
 
         String sessionValue = redisTool.get(wxRegisterVo.getSessionId());
         if(wxRegisterVo.getSessionId()==null || StringUtils.isEmpty(sessionValue)) {
-            throw new BussnessException(30024,"wx session无效");
+            throw new BusinessException(BusinessExceptionEnum.WX_SESSION_INVALID);
         }
         wxRegisterVo.setOpenId(sessionValue);
 
@@ -64,7 +65,7 @@ public class WxService {
             if (new BCryptPasswordEncoder().matches(password, user.getPassword())) {
                 bindUser(wxRegisterVo, user.getUserId());
             } else {
-                throw new BussnessException("密码不正确");
+                throw new BusinessException("密码不正确");
             }
         } else {
             log.info("wx register:{},not exit,to create.", wxRegisterVo.getNickName());

@@ -1,7 +1,7 @@
 package com.fenixbao92.memopro.service;
 
 import com.fenixbao92.memopro.common.constants.PrivilegeConstant;
-import com.fenixbao92.memopro.common.exceptions.BussnessException;
+import com.fenixbao92.memopro.common.exceptions.BusinessException;
 import com.fenixbao92.memopro.common.model.User;
 import com.fenixbao92.memopro.common.model.User2Role;
 import com.fenixbao92.memopro.common.utils.UserUtil;
@@ -45,13 +45,13 @@ public class UserService {
         String encodePassword = encoder.encode(user.getPassword());
         user.setPassword(encodePassword);
         if(userMapper.add(user)<0){
-            throw new BussnessException("user register fail");
+            throw new BusinessException("user register fail");
         }
         User2Role user2Role = new User2Role();
         user2Role.setUserId(user.getUserId());
         user2Role.setRole(PrivilegeConstant.RoleMeta.USER.getName());
         if(user2RoleMapper.add(user2Role)<0){
-            throw new BussnessException("user2Role register fail");
+            throw new BusinessException("user2Role register fail");
         }
         return user.getUserId();
     }

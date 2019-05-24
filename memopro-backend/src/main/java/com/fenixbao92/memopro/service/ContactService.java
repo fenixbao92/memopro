@@ -1,5 +1,7 @@
 package com.fenixbao92.memopro.service;
 
+import com.fenixbao92.memopro.common.constants.BusinessExceptionEnum;
+import com.fenixbao92.memopro.common.exceptions.BusinessException;
 import com.fenixbao92.memopro.common.model.Contact;
 import com.fenixbao92.memopro.common.utils.VoConverter;
 import com.fenixbao92.memopro.common.vo.ContactVo;
@@ -15,10 +17,10 @@ import java.util.stream.Collectors;
 public class ContactService {
 
     @Resource
-    ContactMapper contactMapper;
+    private ContactMapper contactMapper;
 
     @Resource
-    UserService userService;
+    private UserService userService;
 
     public List<ContactVo> getList(String name, String tag, Long offset, Integer size) {
         Long userId = userService.getCurrentUserId();
@@ -31,21 +33,26 @@ public class ContactService {
         return contactMapper.getCount(userId, name, tag);
     }
 
-    public Boolean deleteByIds(String contactIds) {
+    public void deleteByIds(String contactIds) {
         String[] ids = contactIds.split(",");
-        return contactMapper.deleteByIds(ids) == ids.length;
+        if(contactMapper.deleteByIds(ids) != ids.length){
+            throw new BusinessException(BusinessExceptionEnum.DATABASE_ERROR);
+        }
     }
 
-    public int updateContact(Contact contact) {
+    public void updateContact(Contact contact) {
         contact.setUpdateTime(new Date());
-        return contactMapper.update(contact);
+        if(contactMapper.update(contact)!=1){
+            throw new BusinessException(BusinessExceptionEnum.DATABASE_ERROR);
+        }
     }
 
-
-    public int add(Contact contact) {
+    public void add(Contact contact) {
         Long userId = userService.getCurrentUserId();
         contact.setUserId(userId);
         contact.setUpdateTime(new Date());
-        return contactMapper.add(contact);
+        if(contactMapper.add(contact)<1){
+            throw new BusinessException(BusinessExceptionEnum.DATABASE_ERROR);
+        }
     }
 }

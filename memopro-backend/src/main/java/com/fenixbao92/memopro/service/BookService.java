@@ -1,15 +1,14 @@
 package com.fenixbao92.memopro.service;
 
+import com.fenixbao92.memopro.common.constants.BusinessExceptionEnum;
+import com.fenixbao92.memopro.common.exceptions.BusinessException;
 import com.fenixbao92.memopro.common.model.Book;
 import com.fenixbao92.memopro.common.utils.VoConverter;
 import com.fenixbao92.memopro.common.vo.BookVo;
 import com.fenixbao92.memopro.dao.BookMapper;
-import com.fenixbao92.memopro.service.oss.OssService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,10 +17,10 @@ import java.util.stream.Collectors;
 public class BookService {
 
     @Resource
-    BookMapper bookMapper;
+    private BookMapper bookMapper;
 
     @Resource
-    UserService userService;
+    private UserService userService;
 
     public List<BookVo> getList(String name, String status, String tag, Long offset, Integer size) {
         Long userId = userService.getCurrentUserId();
@@ -34,22 +33,28 @@ public class BookService {
         return bookMapper.getCount(userId, name, status, tag);
     }
 
-    public Boolean deleteByIds(String bookIds) {
+    public void deleteByIds(String bookIds) {
         String[] ids = bookIds.split(",");
-        return bookMapper.deleteByIds(ids) == ids.length;
+        if(bookMapper.deleteByIds(ids) != ids.length){
+            throw new BusinessException(BusinessExceptionEnum.DATABASE_ERROR);
+        }
     }
 
-    public int updateBook(Book book) {
+    public void updateBook(Book book) {
         book.setUpdateTime(new Date());
-        return bookMapper.update(book);
+        if(bookMapper.update(book)!=1){
+            throw new BusinessException(BusinessExceptionEnum.DATABASE_ERROR);
+        }
     }
 
 
-    public int add(Book book) {
+    public void add(Book book) {
         Long userId = userService.getCurrentUserId();
         book.setUserId(userId);
         book.setUpdateTime(new Date());
-        return bookMapper.add(book);
+        if(bookMapper.add(book)<1){
+            throw new BusinessException(BusinessExceptionEnum.DATABASE_ERROR);
+        }
     }
 
 }

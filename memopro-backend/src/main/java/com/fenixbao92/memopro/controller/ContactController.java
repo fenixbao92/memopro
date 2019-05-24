@@ -2,7 +2,6 @@ package com.fenixbao92.memopro.controller;
 
 import com.fenixbao92.memopro.common.model.Contact;
 import com.fenixbao92.memopro.common.vo.ContactVo;
-import com.fenixbao92.memopro.common.vo.Result;
 import com.fenixbao92.memopro.service.ContactService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,28 +36,19 @@ public class ContactController {
         return map;
     }
 
-    @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public Result add(Contact contact) {
-        if (contactService.add(contact) == 1) {
-            return Result.ok("添加成功!");
-        }
-        return Result.error("添加失败!");
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public void add(Contact contact) {
+        contactService.add(contact);
     }
 
     @RequestMapping("/delete")
-    public Result delete(@RequestParam String contactIds) {
-        if(contactService.deleteByIds(contactIds)){
-            return Result.ok("删除成功!");
-        }
-        return Result.error("删除失败!");
+    public void delete(@RequestParam String contactIds) {
+        contactService.deleteByIds(contactIds);
     }
 
     @RequestMapping("/update")
-    public Result update(Contact contact) {
-        if (contactService.updateContact(contact) == 1) {
-            return Result.ok("更新成功!");
-        }
-        return Result.error("更新失败!");
+    public void update(Contact contact) {
+        contactService.updateContact(contact);
     }
 
 }

@@ -2,7 +2,6 @@ package com.fenixbao92.memopro.controller;
 
 import com.fenixbao92.memopro.common.model.User;
 import com.fenixbao92.memopro.common.vo.MenuVo;
-import com.fenixbao92.memopro.common.vo.Result;
 import com.fenixbao92.memopro.service.MenuService;
 import com.fenixbao92.memopro.service.UserService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,8 +31,7 @@ public class ConfigController {
     }
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)
-    public Result add(User user) {
+    public void add(User user) {
         userService.register(user.getAccount(),user.getPassword());
-        return Result.ok();
     }
 }

@@ -8,20 +8,8 @@ axios.interceptors.request.use(config => {
   // return Promise.resolve(err);
 })
 axios.interceptors.response.use(data => {
-  if (data.status && data.status == 200 && data.data.status == 500) {
-    Message.error({message: data.data.msg});
-    return;
-  }
-  if (data.status && data.status == 200 && data.data.status == 402) {
-    Message.error({message: '登录失效 请重新登录'});
-    Router.push({
-      path: '/',
-      query: {redirect: Router.currentRoute.fullPath}
-    })
-    return;
-  }
-  if (data.data.msg) {
-    Message.success({message: data.data.msg});
+  if (!data.data||data.data==="") {
+    Message.success({message: "操作成功"});
   }
   return data;
 }, err => {
@@ -30,10 +18,16 @@ axios.interceptors.response.use(data => {
   } else if (err.response.status == 403) {
     Message.error({message: '权限不足,请联系管理员!'});
   } else if (err.response.status == 401) {
-    Message.error({message: err.response.data.msg});
+    Message.error({message: err.response.data});
+  } else if (err.response.status == 701) {
+    Message.error({message: '登录失效 请重新登录'});
+    Router.push({
+      path: '/',
+      query: {redirect: Router.currentRoute.fullPath}
+    })
   } else {
-    if (err.response.data.msg) {
-      Message.error({message: err.response.data.msg});
+    if (err.response.data) {
+      Message.error({message: err.response.data});
     }else{
       Message.error({message: '未知错误!'});
     }

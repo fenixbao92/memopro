@@ -1,8 +1,8 @@
 package com.fenixbao92.memopro.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fenixbao92.memopro.common.vo.Result;
 import com.fenixbao92.memopro.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.*;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
@@ -29,6 +29,7 @@ import java.io.PrintWriter;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@Slf4j
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
@@ -76,20 +77,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                                         HttpServletResponse resp,
                                                         AuthenticationException e) throws IOException {
                         resp.setContentType("application/json;charset=utf-8");
-                        Result result = null;
+                        String result = null;
                         if (e instanceof BadCredentialsException ||
                                 e instanceof UsernameNotFoundException) {
-                            result = result.error("账户名或者密码输入错误!");
+                            result = "账户名或者密码输入错误!";
                         } else if (e instanceof LockedException) {
-                            result = result.error("账户被锁定，请联系管理员!");
+                            result = "账户被锁定，请联系管理员!";
                         } else if (e instanceof CredentialsExpiredException) {
-                            result = result.error("密码过期，请联系管理员!");
+                            result = "密码过期，请联系管理员!";
                         } else if (e instanceof AccountExpiredException) {
-                            result = result.error("账户过期，请联系管理员!");
+                            result = "账户过期，请联系管理员!";
                         } else if (e instanceof DisabledException) {
-                            result = result.error("账户被禁用，请联系管理员!");
+                            result = "账户被禁用，请联系管理员!";
                         } else {
-                            result = result.error("登录失败!");
+                            result = "登录失败!";
                         }
                         resp.setStatus(401);
                         ObjectMapper om = new ObjectMapper();
@@ -105,10 +106,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                                         HttpServletResponse resp,
                                                         Authentication auth) throws IOException {
                         resp.setContentType("application/json;charset=utf-8");
-                        Result result = Result.ok("登录成功!", userService.getCurrentUserVo());
+                        log.info("登录成功!{}", userService.getCurrentUserVo());
                         ObjectMapper om = new ObjectMapper();
                         PrintWriter out = resp.getWriter();
-                        out.write(om.writeValueAsString(result));
+                        out.write(om.writeValueAsString(userService.getCurrentUserVo()));
                         out.flush();
                         out.close();
                     }
@@ -119,12 +120,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/logout")
                 .logoutSuccessHandler(new LogoutSuccessHandler() {
                     @Override
-                    public void onLogoutSuccess(HttpServletRequest req, HttpServletResponse resp, Authentication authentication) throws IOException, ServletException {
+                    public void onLogoutSuccess(HttpServletRequest req, HttpServletResponse resp, Authentication userService) throws IOException, ServletException {
                         resp.setContentType("application/json;charset=utf-8");
-                        Result result = Result.ok("注销成功!");
+                        log.info("注销成功!{}",userService.getPrincipal());
                         ObjectMapper om = new ObjectMapper();
                         PrintWriter out = resp.getWriter();
-                        out.write(om.writeValueAsString(result));
+                        out.write(om.writeValueAsString("注销成功!"));
                         out.flush();
                         out.close();
                     }

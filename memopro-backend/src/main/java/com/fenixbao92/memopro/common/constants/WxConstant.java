@@ -13,19 +13,4 @@ public class WxConstant {
         result = result.replace("JSCODE",code);
         return result;
     }
-
-    @Getter
-    public enum  WxExceptionEnum {
-        SESSION_INVALID("session invalid", 601),
-        ;
-
-        private String description;
-        private int code;
-
-        WxExceptionEnum (String description, int code) {
-            this.description = description;
-            this.code = code;
-        }
-
-    }
 }

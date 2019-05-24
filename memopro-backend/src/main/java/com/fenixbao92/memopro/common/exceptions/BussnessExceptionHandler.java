@@ -1,30 +1,36 @@
 package com.fenixbao92.memopro.common.exceptions;
 
-import com.fenixbao92.memopro.common.vo.Result;
-import com.fenixbao92.memopro.controller.ContactController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Create by fenixbao92 on 2019/5/13.
  */
 @ControllerAdvice
+@Slf4j
 public class BussnessExceptionHandler {
 
-    private Logger logger = LoggerFactory.getLogger(BussnessExceptionHandler.class);
-
-    @ExceptionHandler(BussnessException.class)
-    @ResponseBody
-    public Result handleException(HttpServletRequest request, Exception e)
-    {
-        logger.error("Request FAILD, URL = {} ", request.getRequestURI());
-        BussnessException bussnessException = (BussnessException)e;
-        return Result.error(bussnessException.getStatus(),bussnessException.getMsg());
+    @ExceptionHandler(BusinessException.class)
+    public void handleException(HttpServletRequest request, HttpServletResponse response, BusinessException e) throws IOException {
+        log.error("异常：---Host {} invokes url {} ERROR: {}", request.getRemoteHost(), request.getRequestURL(), e.getMessage());
+        response.setStatus(e.getCode());
+        ObjectMapper om = new ObjectMapper();
+        PrintWriter out = response.getWriter();
+        try{
+            out.write(om.writeValueAsString(e.getMessage()));
+        }catch (Exception e1){
+            out.write("unKnow error");
+        }finally {
+            out.flush();
+            out.close();
+        }
     }
 
 }

@@ -1,5 +1,7 @@
 package com.fenixbao92.memopro.service;
 
+import com.fenixbao92.memopro.common.constants.BusinessExceptionEnum;
+import com.fenixbao92.memopro.common.exceptions.BusinessException;
 import com.fenixbao92.memopro.common.model.Site;
 import com.fenixbao92.memopro.common.utils.VoConverter;
 import com.fenixbao92.memopro.common.vo.SiteVo;
@@ -31,21 +33,26 @@ public class SiteService {
         return siteMapper.getCount(userId, name, tag);
     }
 
-    public Boolean deleteByIds(String siteIds) {
+    public void deleteByIds(String siteIds) {
         String[] ids = siteIds.split(",");
-        return siteMapper.deleteByIds(ids) == ids.length;
+        if(siteMapper.deleteByIds(ids) != ids.length){
+            throw new BusinessException(BusinessExceptionEnum.DATABASE_ERROR);
+        }
     }
 
-    public int updateSite(Site site) {
+    public void updateSite(Site site) {
         site.setUpdateTime(new Date());
-        return siteMapper.update(site);
+        if(siteMapper.update(site)!=1){
+            throw new BusinessException(BusinessExceptionEnum.DATABASE_ERROR);
+        }
     }
 
-
-    public int add(Site site) {
+    public void add(Site site) {
         Long userId = userService.getCurrentUserId();
         site.setUserId(userId);
         site.setUpdateTime(new Date());
-        return siteMapper.add(site);
+        if(siteMapper.add(site)<1){
+            throw new BusinessException(BusinessExceptionEnum.DATABASE_ERROR);
+        }
     }
 }

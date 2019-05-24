@@ -1,6 +1,7 @@
 package com.fenixbao92.memopro.service;
 
-import com.fenixbao92.memopro.common.exceptions.BussnessException;
+import com.fenixbao92.memopro.common.constants.BusinessExceptionEnum;
+import com.fenixbao92.memopro.common.exceptions.BusinessException;
 import com.fenixbao92.memopro.common.model.Todo;
 import com.fenixbao92.memopro.common.utils.VoConverter;
 import com.fenixbao92.memopro.common.vo.TodoVo;
@@ -16,10 +17,10 @@ import java.util.stream.Collectors;
 public class TodoService {
 
     @Resource
-    TodoMapper todoMapper;
+    private TodoMapper todoMapper;
 
     @Resource
-    UserService userService;
+    private UserService userService;
 
     public List<TodoVo> getList(String time, String category, String status, String tag, Long offset, Integer size) {
         Long userId = userService.getCurrentUserId();
@@ -32,9 +33,11 @@ public class TodoService {
         return todoMapper.getCount(null,userId, time, category, status, tag);
     }
 
-    public Boolean deleteByIds(String todoIds) {
+    public void deleteByIds(String todoIds) {
         String[] ids = todoIds.split(",");
-        return todoMapper.deleteByIds(ids) == ids.length;
+        if(todoMapper.deleteByIds(ids) != ids.length){
+            throw new BusinessException(BusinessExceptionEnum.DATABASE_ERROR);
+        }
     }
 
     public Todo getById(Long todoId){
@@ -46,33 +49,41 @@ public class TodoService {
         return null;
     }
 
-    public int updateTodo(Todo todo) {
-        if (todo.getStatus().equals("未开始")) {
-            todo.setStartTime(null);
-            todo.setEndTime(null);
-        } else if (todo.getStatus().equals("进行中")) {
-            todo.setStartTime(new Date());
-            todo.setEndTime(null);
-        } else if (todo.getStatus().equals("已完成")) {
-            todo.setEndTime(new Date());
+    public void updateTodo(Todo todo) {
+        switch (todo.getStatus()) {
+            case "未开始":
+                todo.setStartTime(null);
+                todo.setEndTime(null);
+                break;
+            case "进行中":
+                todo.setStartTime(new Date());
+                todo.setEndTime(null);
+                break;
+            case "已完成":
+                todo.setEndTime(new Date());
+                break;
         }
         todo.setUpdateTime(new Date());
-        return todoMapper.update(todo);
+        if(todoMapper.update(todo)!=1){
+            throw new BusinessException(BusinessExceptionEnum.DATABASE_ERROR);
+        }
     }
 
 
-    public int add(Todo todo) {
+    public void add(Todo todo) {
         Long userId = userService.getCurrentUserId();
         todo.setUserId(userId);
         todo.setUpdateTime(new Date());
         Long count = getCount(todo.getTime(), null, null, null);
         todo.setIndex(todo.getTime() + "#" + (count + 1));
-        return todoMapper.add(todo);
+        if(todoMapper.add(todo)<1){
+            throw new BusinessException(BusinessExceptionEnum.DATABASE_ERROR);
+        }
     }
 
-    public int changeStatus(Long todoId, String action) {
+    public void changeStatus(Long todoId, String action) {
         Todo old = getById(todoId);
-        if(old==null) throw new BussnessException("待办不存在");
+        if(old==null) throw new BusinessException("待办不存在");
         String status = old.getStatus();
         Todo toUpdate = new Todo();
         toUpdate.setTodoId(todoId);
@@ -101,6 +112,8 @@ public class TodoService {
             }
         } else if (status.equals("已完成")) {
         }
-        return todoMapper.update(toUpdate);
+        if(todoMapper.update(toUpdate)!=1){
+            throw new BusinessException(BusinessExceptionEnum.DATABASE_ERROR);
+        }
     }
 }
