@@ -20,11 +20,10 @@ public class RegisterController {
     private WxService wxService;
 
     @RequestMapping(value = "/register")
-    public String register(WxRegisterVo wxRegisterVo, HttpServletRequest httpServletRequest) {
+    public void register(WxRegisterVo wxRegisterVo, HttpServletRequest httpServletRequest) {
         String sessionId = httpServletRequest.getHeader("sessionId");
         wxRegisterVo.setSessionId(sessionId);
         wxService.register(wxRegisterVo);
-        return SUCCESS;
     }
 
     @RequestMapping(value = "/test")
