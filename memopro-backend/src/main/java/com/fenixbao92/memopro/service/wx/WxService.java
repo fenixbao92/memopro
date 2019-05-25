@@ -60,10 +60,6 @@ public class WxService {
         String account = wxRegisterVo.getAccount();
         String password = wxRegisterVo.getPassword();
         User user = userMapper.loadUserByAccount(account);
-        WxUser old = wxUserService.getByOpenId(wxRegisterVo.getOpenId());
-        if(old!=null){
-            throw new BusinessException("这个微信号已经登录绑定过了");
-        }
         if (user != null) {
             log.info("wx register:{},already exit,to bind.", wxRegisterVo.getNickName());
             if (new BCryptPasswordEncoder().matches(password, user.getPassword())) {
@@ -79,11 +75,11 @@ public class WxService {
     }
 
     private void bindUser(WxRegisterVo wxRegisterVo, Long userId) {
-        WxUser wxUser = new WxUser();
+        WxUser wxUser = wxUserService.getByOpenId(wxRegisterVo.getOpenId());
         BeanMapper.copy(wxRegisterVo,wxUser);
         wxUser.setUserId(userId);
-        log.info("wx bindUser new:{}<->{},new user,add", wxRegisterVo.getAccount(),wxRegisterVo.getOpenId());
-        wxUserService.add(wxUser);
+        log.info("wx bindUser new:{}<->{}", wxRegisterVo.getAccount(),wxRegisterVo.getOpenId());
+        wxUserService.updateWxUser(wxUser);
     }
 
     public WxUser getbindinfo(String sessionId) {
@@ -92,6 +88,9 @@ public class WxService {
             throw new BusinessException("sessionID 无效");
         }
         WxUser byOpenId = wxUserService.getByOpenId(sessionValue);
+        if(byOpenId.getUserId()==null){
+            throw new BusinessException("sessionID 无效");
+        }
         byOpenId.setSessionKey(null);
         return byOpenId;
     }
