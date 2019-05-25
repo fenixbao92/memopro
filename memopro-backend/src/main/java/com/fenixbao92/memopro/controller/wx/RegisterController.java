@@ -2,6 +2,7 @@ package com.fenixbao92.memopro.controller.wx;
 
 import com.fenixbao92.memopro.common.constants.BusinessExceptionEnum;
 import com.fenixbao92.memopro.common.exceptions.BusinessException;
+import com.fenixbao92.memopro.common.model.wx.WxUser;
 import com.fenixbao92.memopro.common.vo.wx.WxRegisterVo;
 import com.fenixbao92.memopro.service.wx.WxService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,12 @@ public class RegisterController {
         String sessionId = httpServletRequest.getHeader("sessionId");
         wxRegisterVo.setSessionId(sessionId);
         wxService.register(wxRegisterVo);
+    }
+
+    @RequestMapping("/getbindinfo")
+    public WxUser getbindinfo(HttpServletRequest httpServletRequest) {
+        String sessionId = httpServletRequest.getHeader("sessionId");
+        return wxService.getbindinfo(sessionId);
     }
 
     @RequestMapping(value = "/test")
