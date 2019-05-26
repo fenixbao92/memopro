@@ -47,7 +47,7 @@ public class WxSessionProcessInterceptor implements HandlerInterceptor {
         if (openId == null) {
             return true;
         }
-        log.info("wx request received ==== sessionId:{},openId:{}",sessionId,openId);
+        log.info("wx request received ==== sessionId:{},openId:{},uri:{}",sessionId,openId,request.getRequestURI());
         WxUser wxUser = wxUserService.getByOpenId(openId);
         User user = userMapper.loadUserByUserId(wxUser.getUserId());
 
@@ -59,7 +59,7 @@ public class WxSessionProcessInterceptor implements HandlerInterceptor {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String path = request.getRequestURI();
-        path = path.replace("^/wx/", "");
+        path = path.replaceAll("^/wx/", "");
         request.getRequestDispatcher(path).forward(request, response);
         return true;        //有的话就继续操作
     }
