@@ -63,7 +63,7 @@ public class WxSessionProcessInterceptor implements HandlerInterceptor {
         path = path.replaceAll("^/wx", "");
         System.out.println(path);
         request.getRequestDispatcher(path).forward(request, response);
-        return true;        //有的话就继续操作
+        return false;        //有的话就继续操作
     }
 
     @Override
