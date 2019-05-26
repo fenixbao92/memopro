@@ -89,7 +89,7 @@ public class WxService {
         }
         WxUser byOpenId = wxUserService.getByOpenId(sessionValue);
         if(byOpenId.getUserId()==null){
-            throw new BusinessException("sessionID 无效");
+            throw new BusinessException("尚未绑定");
         }
         byOpenId.setSessionKey(null);
         return byOpenId;

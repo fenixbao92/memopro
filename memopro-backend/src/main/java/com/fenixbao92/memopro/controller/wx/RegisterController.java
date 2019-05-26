@@ -3,6 +3,7 @@ package com.fenixbao92.memopro.controller.wx;
 import com.fenixbao92.memopro.common.constants.BusinessExceptionEnum;
 import com.fenixbao92.memopro.common.exceptions.BusinessException;
 import com.fenixbao92.memopro.common.model.wx.WxUser;
+import com.fenixbao92.memopro.common.utils.UserUtil;
 import com.fenixbao92.memopro.common.vo.wx.WxRegisterVo;
 import com.fenixbao92.memopro.service.wx.WxService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +39,16 @@ public class RegisterController {
         if(c==1){
             throw new BusinessException(BusinessExceptionEnum.WX_SESSION_INVALID);
         }
+        String accountofCurrentUser = UserUtil.getAccountofCurrentUser();
+        return "test success";
+    }
+
+    @RequestMapping(value = "/c/test")
+    public String test1(Integer c) {
+        if(c==1){
+            throw new BusinessException(BusinessExceptionEnum.WX_SESSION_INVALID);
+        }
+        String accountofCurrentUser = UserUtil.getAccountofCurrentUser();
         return "test success";
     }
 

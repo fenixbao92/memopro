@@ -13,6 +13,9 @@ public interface UserMapper {
     @Select("SELECT * FROM `User` WHERE account = #{account}")
     User loadUserByAccount(String account);
 
+    @Select("SELECT * FROM `User` WHERE userId = #{userId}")
+    User loadUserByUserId(Long userId);
+
     @Insert({"<script>",
             "insert into  `User` (account,name,avatar,phone,password,remark,status)",
             "values (#{account},#{name},#{avatar},#{phone},#{password},#{remark},#{status})",
