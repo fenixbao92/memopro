@@ -61,7 +61,6 @@ public class WxSessionProcessInterceptor implements HandlerInterceptor {
         String path = request.getRequestURI();
         //todo add writeList to avoid endless call
         path = path.replaceAll("^/wx", "");
-        System.out.println(path);
         request.getRequestDispatcher(path).forward(request, response);
         return false;        //有的话就继续操作
     }
