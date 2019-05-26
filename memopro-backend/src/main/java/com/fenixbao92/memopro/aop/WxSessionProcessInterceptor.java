@@ -59,7 +59,9 @@ public class WxSessionProcessInterceptor implements HandlerInterceptor {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String path = request.getRequestURI();
-        path = path.replaceAll("^/wx/", "");
+        //todo add writeList to avoid endless call
+        path = path.replaceAll("^/wx", "");
+        System.out.println(path);
         request.getRequestDispatcher(path).forward(request, response);
         return true;        //有的话就继续操作
     }
